@@ -108,7 +108,18 @@ namespace Compilador_MiniCSharp
                         }
                         if (DividirComentario.Length == 1)
                         {
-                            Comentarios.Add(DividirComentario[0] + "*/");
+                            if (DividirComentario[0].Contains("/*"))
+                            {
+                                var Divisor = DividirComentario[0].Split("/*", StringSplitOptions.RemoveEmptyEntries);
+                                Analisis(Divisor[0], ContadorLineas);
+                                Comentarios.Add("/*" + Divisor[1] + "*/");
+                            }
+                            else
+                            {
+
+
+                                Comentarios.Add(DividirComentario[0] + "*/");
+                            }
                         }
 
                         if (DividirComentario.Length > 1)
