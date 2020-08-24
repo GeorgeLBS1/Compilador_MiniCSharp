@@ -66,6 +66,7 @@ namespace Compilador_MiniCSharp
                 {
                     if (!Linea.Contains("*/"))
                     {
+                        Linea = Linea.Replace("\t", " ");
                         var Divisior = Linea.Split("/*", StringSplitOptions.RemoveEmptyEntries);
                         bool comprobar = false;
                         if (Divisior.Length > 1)
@@ -101,6 +102,7 @@ namespace Compilador_MiniCSharp
                     }
                     if (CierreComentario == false)
                     {
+                        Linea = Linea.Replace("\t", " ");
                         var DividirComentario = Linea.Split("*/", StringSplitOptions.RemoveEmptyEntries);
                         if (DividirComentario.Length == 0)
                         {
