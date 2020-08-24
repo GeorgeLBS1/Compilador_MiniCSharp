@@ -253,12 +253,22 @@ namespace Compilador_MiniCSharp
                     Tipo_token = "Comentario de linea simple";
                     break;
                 default:
-                    Tipo_token = "ERROR Token no reconocido";
+                    Tipo_token = "Token NO RECONOCIDO";
                     break;
             }
             if (token.Tipo_token != 8)
             {
-                writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
+                if (Tipo_token == "Token NO RECONOCIDO")
+                {
+                    writer.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token+"*********");
+                    writer.WriteLine("");
+                }
+                else
+                {
+                    writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
+                    writer.WriteLine("");
+                }
+                
             }
             writer.Close();
         }
