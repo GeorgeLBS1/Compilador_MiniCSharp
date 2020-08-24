@@ -27,7 +27,8 @@ namespace Compilador_MiniCSharp
             @"^[0]([x]|[X])", //Posible secuencia de número hexadecimales, 10
             @"^\d+(\.)$", //Posible secuencia double, 11
             @"^\d+(\.)(E\+|e\+)$", //Posible secuencia double, 12
-            @"^\d+(\.)(E|e)" //Posible secuencia double, 13
+            @"^\d+(\.)(E|e)", //Posible secuencia double, 13
+            @"^[\/][\/]$" //Posibles Comentarios linea simple, 14
         };
         public List<Token> ListaDeTokens = new List<Token>(); //Se listan todos los tokens encontrados en el archivo
         public static string ruta = string.Empty; //Ruta del archivo para generar el de salida
