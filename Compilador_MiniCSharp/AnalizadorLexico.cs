@@ -63,6 +63,7 @@ namespace Compilador_MiniCSharp
                     {
                         Linea = Linea.Replace("\t", " "); //cambiar tabulaciones por espacio
                         Analisis(Linea, ContadorLineas);   //enviar al analizador
+                        ContadorLineas++;
                     }
 
                 }
@@ -102,10 +103,12 @@ namespace Compilador_MiniCSharp
 
 
                         }
+                        ContadorLineas--;
 
                     }
                     if (CierreComentario == false)
                     {
+                        ContadorLineas++;
                         Linea = Linea.Replace("\t", " ");
                         var DividirComentario = Linea.Split("*/", StringSplitOptions.RemoveEmptyEntries);
                         if (DividirComentario.Length == 0)
