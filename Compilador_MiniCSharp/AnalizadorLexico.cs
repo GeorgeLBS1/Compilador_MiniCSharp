@@ -168,6 +168,11 @@ namespace Compilador_MiniCSharp
 
 
                     }
+                    else
+                    {
+                        Console.WriteLine("Error EOF, no se ha cerrado el comentario");
+                    }
+
                 }
 
             }
