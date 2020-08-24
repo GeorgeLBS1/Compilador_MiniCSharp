@@ -7,14 +7,13 @@ namespace Compilador_MiniCSharp
         static void Main(string[] args)
         {
             Console.WriteLine("Ingrese la ruta del archivo");
+            Console.WriteLine("");
             string archivo = Console.ReadLine();
 
             archivo = archivo.Trim('"');
             AnalizadorLexico analizador = new AnalizadorLexico();
             analizador.LeerArchivo(archivo);
-            
-            //int i = analizador.AnalizarLexema("Hola");
-            //Console.WriteLine(Convert.ToString(i));
+            Console.ReadKey();
         }
     }
 }

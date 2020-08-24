@@ -268,11 +268,15 @@ namespace Compilador_MiniCSharp
                 {
                     writer.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token+"*********");
                     writer.WriteLine("");
+                    Console.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                    Console.WriteLine("");
                 }
                 else
                 {
                     writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
                     writer.WriteLine("");
+                    Console.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
+                    Console.WriteLine("");
                 }
                 
             }
