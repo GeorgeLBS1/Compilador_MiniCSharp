@@ -48,15 +48,17 @@ namespace Compilador_MiniCSharp
             StreamReader reader = new StreamReader(path);
             ruta = path;
             string Linea = string.Empty; //Variable para ayudar a la lectura del archivo linea a linea
-            bool CierreComentario; //verifica si existe cierre de comentario
+            bool CierreComentario =false; //verifica si existe cierre de comentario
             int ContadorLineas = 0;
+            string TextoAnalisis = "";
+            string _comentario = "";
 
             while ((Linea = reader.ReadLine()) != null) //Leer todas las lineas del archivo 
             {
                 CierreComentario = false;
                 if (!Linea.Contains("/*")) //No trae comentario
                 {
-                    if (Linea.Equals(""))
+                    if (Linea.Equals("")) // si al leer la cadena viene vacia solo suma al contador de lineas
                     {
                         ContadorLineas++;
                     }
@@ -68,113 +70,76 @@ namespace Compilador_MiniCSharp
                     }
 
                 }
-                else
+                else //si viene comentario multilinea
                 {
-                    if (!Linea.Contains("*/"))
+                    string comparación = "";
+                    for (int i = 0; i < Linea.Length; i++) 
                     {
-                        Linea = Linea.Replace("\t", " ");
-                        var Divisior = Linea.Split("/*", StringSplitOptions.RemoveEmptyEntries);
-                        bool comprobar = false;
-                        if (Divisior.Length > 1)
+                        if (i + 1 != Linea.Length)  //concatena para verificar los simbolos de cierre o apertura de comentario
                         {
-                            comprobar = true;
-                        }
-                        if (comprobar == true)
-                        {
-                            Analisis(Divisior[0], ContadorLineas);
-                            Comentarios.Add("/*" + Divisior[1]);
-                            Linea = reader.ReadLine();
-                            ContadorLineas++;
-
+                            comparación = Convert.ToString(Linea[i]) + Convert.ToString(Linea[i + 1]);
                         }
 
-                        while (!Linea.Contains("*/"))
+                        if (!CierreComentario && !comparación.Equals("/*"))  // si hay codigo antes del comentario
                         {
 
-                            Comentarios.Add(Linea);
-                            Linea = reader.ReadLine();
-                            ContadorLineas++;
+                            TextoAnalisis += Convert.ToString(Linea[i]);
 
-                            if (reader.EndOfStream && Linea == null)
+                        }
+                        else if (!CierreComentario && comparación.Equals("/*"))  // inicio del comentario
+                        {
+                            CierreComentario = true;
+                            if (!TextoAnalisis.Equals("")) // confirma si existe codigo para enviarlo al analisis
                             {
-                                CierreComentario = true;
-                                break;
-
+                                Analisis(TextoAnalisis, ContadorLineas);
                             }
+                            TextoAnalisis = "";
+                            _comentario += Convert.ToString(Linea[i]) + Convert.ToString(Linea[i + 1]);
+                            i++;
+                        }
+                        else if (CierreComentario && !comparación.Equals("*/"))  // lo que dure el comentario se acumula
+                        {
+
+                            _comentario += Convert.ToString(Linea[i]);
 
 
                         }
-                        ContadorLineas--;
-
-                    }
-                    if (CierreComentario == false)
-                    {
-                        ContadorLineas++;
-                        Linea = Linea.Replace("\t", " ");
-                        var DividirComentario = Linea.Split("*/", StringSplitOptions.RemoveEmptyEntries);
-                        if (DividirComentario.Length == 0)
+                        else if (CierreComentario && comparación.Equals("*/"))  //cuando se cierra el comentario
                         {
-                            Comentarios.Add("*/");
+
+                            _comentario += Convert.ToString(Linea[i]) + Convert.ToString(Linea[i + 1]);
+                            i++;
+                            Comentarios.Add(_comentario);
+                            _comentario = "";
+                            CierreComentario = false;
+
                         }
-                        if (DividirComentario.Length == 1)
+                        else
+                        { }
+                        if (i + 1 == Linea.Length && (!_comentario.Equals("") || !TextoAnalisis.Equals("")))  //si hay salto de linea y el comentario no ha terminado o queda algo de codiog
                         {
-                            if (DividirComentario[0].Contains("/*"))
+                            if (CierreComentario && !_comentario.Equals(""))  // comentario activo y comentario no vacio
                             {
-                                var Divisor = DividirComentario[0].Split("/*", StringSplitOptions.RemoveEmptyEntries);
-                                Analisis(Divisor[0], ContadorLineas);
-                                Comentarios.Add("/*" + Divisor[1] + "*/");
+                                _comentario += Convert.ToString(Linea[i]);
+                                Comentarios.Add(_comentario);
+                                _comentario = "";
                             }
-                            else
+                            if (!CierreComentario && !TextoAnalisis.Equals(""))  // comentario cerrado pero existe codigo despues del comentario
                             {
-
-
-                                Comentarios.Add(DividirComentario[0] + "*/");
-                            }
-                        }
-
-                        if (DividirComentario.Length > 1)
-                        {
-
-                            if (DividirComentario[0].Contains("/*"))
-                            {
-                                var Divisor = DividirComentario[0].Split("/*", StringSplitOptions.RemoveEmptyEntries);
-                                if (Divisor.Length > 1)
-                                {
-                                    Analisis(Divisor[0], ContadorLineas);
-
-                                    if (DividirComentario.Length > 1)
-                                    {
-                                        Analisis(DividirComentario[1], ContadorLineas);
-                                        Comentarios.Add(Divisor[1] + "*/");
-                                    }
-                                    else
-                                    {
-                                        Comentarios.Add(Divisor[1] + DividirComentario[1] + "*/");
-                                    }
-
-                                }
-
-
-                            }
-                            else
-                            {
-                                Comentarios.Add(DividirComentario[0] + "*/");
-                                if (!DividirComentario[1].Trim(' ').Equals(""))
-                                {
-                                    Analisis(DividirComentario[1], ContadorLineas);
-                                }
+                                TextoAnalisis += Convert.ToString(Linea[i]);
+                                Analisis(TextoAnalisis, ContadorLineas);
+                                TextoAnalisis = "";
                             }
                         }
 
 
                     }
-                    else
-                    {
-                        Console.WriteLine("Error EOF, no se ha cerrado el comentario");
-                    }
-
                 }
-
+                    
+             }
+            if (CierreComentario)  // si no se cerro el comentario existe error EOF
+            {
+                Console.WriteLine("Error EOF, no se cerro comentario");
             }
             reader.Close();
         }
