@@ -147,50 +147,54 @@ namespace Compilador_MiniCSharp
         {
             string lexema = string.Empty;
             string InicioDePalabra = string.Empty;
-            for (int i = 0; i <= linea.Length; i++) //Recorrer la línea del archivo como tal
+            if (linea != "\n") //Si la linea es diferente a una linea vacía
             {
-                if (i != linea.Length)
+                for (int i = 0; i <= linea.Length; i++) //Recorrer la línea del archivo como tal
                 {
-                    lexema += linea[i];
-                }
-
-                int No_Token = AnalizarLexema(lexema);
-                if (No_Token == -100 || i == linea.Length) //si el token no se reconoce
-                {
-                    string aux = string.Empty;
-                    if (lexema.Length > 1 && i <= linea.Length - 1) //solo si el largo de la cadena es mayor a 1 y si la secuencia no compone un caracter completo
+                    if (i != linea.Length)
                     {
-                        aux = lexema.Remove(lexema.Length - 1); //volverlo a reconocer sin el último caracter   
-
-                        No_Token = AnalizarLexema(aux); //asignar el codigo del lexema encontrado o reconocido al número de token
-                        Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length - 1, NoLinea, No_Token); //Crear en sí el token
-
-                        //Escribir en el archivo de salida de texto la información del token
-                        EscribirEnArchivo(Path.GetFileNameWithoutExtension(ruta), token);
-
-
-                        if (token.Tipo_token != 8 && token.Tipo_token != -100) //Para la tabla de símbolos se guardan todos los tokens que SÍ fueron RECONOCIDOS
-                        {
-                            ListaDeTokens.Add(token);
-                        }
-                        InicioDePalabra += aux;
-                        lexema = Convert.ToString(lexema[^1]);
-                    }
-                    else //Esto se realiza si ya es el último caracter o es un caracter singular
-                    {
-                        aux = lexema;
-                        Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length - 1, NoLinea, No_Token); //Crear en sí el token
-                        EscribirEnArchivo(Path.GetFileNameWithoutExtension(ruta), token);
-                        if (token.Tipo_token != 8 && token.Tipo_token != -100) //Para la tabla de símbolos se guardan todos los tokens que SÍ fueron RECONOCIDOS
-                        {
-                            ListaDeTokens.Add(token);
-                        }
-                        InicioDePalabra = aux;
-                        lexema = string.Empty;
+                        lexema += linea[i];
                     }
 
+                    int No_Token = AnalizarLexema(lexema);
+                    if (No_Token == -100 || i == linea.Length) //si el token no se reconoce
+                    {
+                        string aux = string.Empty;
+                        if (lexema.Length > 1 && i <= linea.Length - 1) //solo si el largo de la cadena es mayor a 1 y si la secuencia no compone un caracter completo
+                        {
+                            aux = lexema.Remove(lexema.Length - 1); //volverlo a reconocer sin el último caracter   
+
+                            No_Token = AnalizarLexema(aux); //asignar el codigo del lexema encontrado o reconocido al número de token
+                            Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length - 1, NoLinea, No_Token); //Crear en sí el token
+
+                            //Escribir en el archivo de salida de texto la información del token
+                            EscribirEnArchivo(Path.GetFileNameWithoutExtension(ruta), token);
+
+
+                            if (token.Tipo_token != 8 && token.Tipo_token != -100 && token.Tipo_token != 7) //Para la tabla de símbolos se guardan todos los tokens que SÍ fueron RECONOCIDOS
+                            {
+                                ListaDeTokens.Add(token);
+                            }
+                            InicioDePalabra += aux;
+                            lexema = Convert.ToString(lexema[^1]);
+                        }
+                        else //Esto se realiza si ya es el último caracter o es un caracter singular
+                        {
+                            aux = lexema;
+                            Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length - 1, NoLinea, No_Token); //Crear en sí el token
+                            EscribirEnArchivo(Path.GetFileNameWithoutExtension(ruta), token);
+                            if (token.Tipo_token != 8 && token.Tipo_token != -100 && token.Tipo_token != 7) //Para la tabla de símbolos se guardan todos los tokens que SÍ fueron RECONOCIDOS
+                            {
+                                ListaDeTokens.Add(token);
+                            }
+                            InicioDePalabra = aux;
+                            lexema = string.Empty;
+                        }
+
+                    }
                 }
             }
+            
             var f = ListaDeTokens.Count;
         }
         void EscribirEnArchivo(string ruta, Token token)
@@ -236,7 +240,7 @@ namespace Compilador_MiniCSharp
                     Console.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
                     Console.WriteLine("");
                 }
-                else
+                else if(token.Tipo_token != 7)
                 {
                     writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
                     writer.WriteLine("");
