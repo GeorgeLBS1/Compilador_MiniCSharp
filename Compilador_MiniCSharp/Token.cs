@@ -17,7 +17,7 @@ namespace Compilador_MiniCSharp
             Palabra = p;
             CInicio = ini + 1;
             CFinal = fin + 1;
-            Linea = lin + 1;
+            Linea = lin;
             Tipo_token = tip;
         }
     }

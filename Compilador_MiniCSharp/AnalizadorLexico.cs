@@ -136,7 +136,9 @@ namespace Compilador_MiniCSharp
              }
             if (CierreComentario)  // si no se cerro el comentario existe error EOF
             {
-                Console.WriteLine("Error EOF, no se cerro comentario");
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("**********ERROR EOF, no se cerro comentario**********");
+                Console.BackgroundColor = ConsoleColor.Black;
             }
             reader.Close();
         }
@@ -164,7 +166,7 @@ namespace Compilador_MiniCSharp
                             aux = lexema.Remove(lexema.Length - 1); //volverlo a reconocer sin el último caracter   
 
                             No_Token = AnalizarLexema(aux); //asignar el codigo del lexema encontrado o reconocido al número de token
-                            Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length - 1, NoLinea, No_Token); //Crear en sí el token
+                            Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length, NoLinea, No_Token); //Crear en sí el token
 
                             //Escribir en el archivo de salida de texto la información del token
                             EscribirEnArchivo(Path.GetFileNameWithoutExtension(ruta), token);
@@ -180,7 +182,7 @@ namespace Compilador_MiniCSharp
                         else //Esto se realiza si ya es el último caracter o es un caracter singular
                         {
                             aux = lexema;
-                            Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length - 1, NoLinea, No_Token); //Crear en sí el token
+                            Token token = new Token(aux, InicioDePalabra.Length, InicioDePalabra.Length + aux.Length, NoLinea, No_Token); //Crear en sí el token
                             EscribirEnArchivo(Path.GetFileNameWithoutExtension(ruta), token);
                             if (token.Tipo_token != 8 && token.Tipo_token != -100 && token.Tipo_token != 7) //Para la tabla de símbolos se guardan todos los tokens que SÍ fueron RECONOCIDOS
                             {
@@ -236,8 +238,11 @@ namespace Compilador_MiniCSharp
                 {
                     writer.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token+"*********");
                     writer.WriteLine("");
+                    Console.BackgroundColor = ConsoleColor.Red;
                     Console.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                    Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("");
+                    
                 }
                 else if(token.Tipo_token != 7)
                 {
