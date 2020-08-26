@@ -19,7 +19,7 @@ namespace Compilador_MiniCSharp
             @"^\d+((\.)(E\+|e\+)?\d+)?$", //Constantes double incluido notación exponencial, 2
             @"^[0]([x]|[X])(((\d|(([a-f]|[A-F])|\d)*)|([a-f]([a-f]|\d)+)))*$", //Constantes Enteros incluidos el hexadecimal, 3         
             @"^\+$|^\-$|^\/$|^\*$|^\%$|^\<$|^\<=$|^\>$|^\>\=$|^\=$|^\=\=$|^\!=$|^\&\&$|^\|\|$|^\!$|^\;$|^\,$|^\.$|^\[\]$|^\[$|^\]|^\(\)$|^\{$|^\}$|^\{\}$|^\($|^\)$", //Operadores y signos de puntuación, 4
-            @"^[A-z|$]([A-z0-9$]){0,30}$", //Identificadores de largo máximo = 30, 5
+            @"^[A-z|$]([A-z0-9$]){0,29}$", //Identificadores de largo máximo = 30, 5
             "^\".+\"$", //String, 6
             @"^[\/][\/].+$", //Comentarios linea simple, 7
             @"^\s+$", // espacio vacío o secuencia de espacios vacíos, 8
@@ -28,7 +28,8 @@ namespace Compilador_MiniCSharp
             @"^\d+(\.)$", //Posible secuencia double, 11
             @"^\d+(\.)(E\+|e\+)$", //Posible secuencia double, 12
             @"^\d+(\.)(E|e)", //Posible secuencia double, 13
-            @"^[\/][\/]$" //Posibles Comentarios linea simple, 14
+            @"^[\/][\/]$", //Posibles Comentarios linea simple, 14
+            @"^[A-z|$]([A-z0-9$]){30,}$", //Identificadores si se pasa de 31 para manejo de error, 15
         };
         public List<Token> ListaDeTokens = new List<Token>(); //Se listan todos los tokens encontrados en el archivo
         public static string ruta = string.Empty; //Ruta del archivo para generar el de salida
@@ -147,7 +148,8 @@ namespace Compilador_MiniCSharp
             reader.Close();
         }
 
-       
+        
+
         public void Analisis(string linea, int NoLinea)
         {
             string lexema = string.Empty;
@@ -238,15 +240,27 @@ namespace Compilador_MiniCSharp
             }
             if (token.Tipo_token != 8)
             {
-                if (Tipo_token == "Token NO RECONOCIDO")
+                if (Tipo_token == "Token NO RECONOCIDO" && token.Tipo_token != 15)
                 {
-                    writer.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token+"*********");
+                    writer.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token+"*********");
                     writer.WriteLine("");
                     Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine(token.Palabra + @"******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                    Console.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("");
                     
+                }
+                else if (token.Tipo_token == 15)
+                {
+                    token.Palabra = CortarID(token.Palabra);
+                    token.Tipo_token = 5;
+                    Tipo_token = "T_Identificador";
+                    writer.WriteLine(token.Palabra + @" ******ERROR, el identificador excede la cantidad de caracteres que puede tener. Se conservarán solo los primeros 30.         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                    writer.WriteLine("");
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.WriteLine(token.Palabra + @" ******ERROR, el identificador excede la cantidad de caracteres que puede tener. Se conservarán solo los primeros 30.       Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("");
                 }
                 else if(token.Tipo_token != 7)
                 {
@@ -258,6 +272,16 @@ namespace Compilador_MiniCSharp
                 
             }
             writer.Close();
+        }
+        string CortarID(string id)
+        {
+            string salida = string.Empty;
+            for (int i = 0; i < 30; i++)
+            {
+                salida += id[i];
+            }
+            var s = salida.Length;
+            return salida;
         }
     }
 }
