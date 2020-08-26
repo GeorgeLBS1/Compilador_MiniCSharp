@@ -56,14 +56,18 @@ namespace Compilador_MiniCSharp
             while ((Linea = reader.ReadLine()) != null) //Leer todas las lineas del archivo 
             {
                 ContadorLineas++;
-                Linea = Linea.Replace("\t", " "); //cambiar tabulaciones por espacio
-                if (!Linea.Contains("/*")) //No trae comentario
+                Linea = Linea.Replace("\t", " ");
+                if (!Linea.Contains("/*") && !CierreComentario) //No trae comentario
                 {
-                    if (!Linea.Equals("") && !CierreComentario) // si al leer la cadena viene vacia solo suma al contador de lineas
+                    if (Linea.Equals(""))
                     {
-                       
+
+                    }
+                    else
+                    {
+                        //cambiar tabulaciones por espacio
                         Analisis(Linea, ContadorLineas);   //enviar al analizador
-                        
+
                     }
 
                 }
