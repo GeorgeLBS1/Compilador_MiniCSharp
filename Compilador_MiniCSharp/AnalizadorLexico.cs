@@ -11,6 +11,8 @@ namespace Compilador_MiniCSharp
 {
     public class AnalizadorLexico
     {
+        public bool Errores = false;
+        public int CantidadErrores = 0;
         public static List<string> Comentarios = new List<string>(); //Se guardan los comentarios
         readonly List<string> ER = new List<string>() //Lista que contiene todas las expresiones regulares a usar para analizar el archivo y la sintaxis de este
         {
@@ -147,9 +149,6 @@ namespace Compilador_MiniCSharp
             }
             reader.Close();
         }
-
-        
-
         public void Analisis(string linea, int NoLinea)
         {
             string lexema = string.Empty;
@@ -242,12 +241,29 @@ namespace Compilador_MiniCSharp
             {
                 if (Tipo_token == "Token NO RECONOCIDO" && token.Tipo_token != 15)
                 {
-                    writer.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token+"*********");
-                    writer.WriteLine("");
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.WriteLine("");
+                    if (Regex.IsMatch(token.Palabra, ER[9]) == true)
+                    {
+                        writer.WriteLine(token.Palabra + @" ******ERROR, posiblemente falten comillas de cierre.         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                        writer.WriteLine("");
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.WriteLine(token.Palabra + @" ******ERROR, posiblemente falten comillas de cierre.         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("");
+                        Errores = true;
+                        CantidadErrores++;
+                    }
+                    else
+                    {
+                        writer.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                        writer.WriteLine("");
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("");
+                        Errores = true;
+                        CantidadErrores++;
+                    }
+                    
                     
                 }
                 else if (token.Tipo_token == 15)
@@ -261,14 +277,16 @@ namespace Compilador_MiniCSharp
                     Console.WriteLine(token.Palabra + @" ******ERROR, el identificador excede la cantidad de caracteres que puede tener. Se conservarán solo los primeros 30.       Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("");
+                    Errores = true;
+                    CantidadErrores++;
                 }
-                else if(token.Tipo_token != 7)
-                {
-                    writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
-                    writer.WriteLine("");
-                    Console.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
-                    Console.WriteLine("");
-                }
+                //else if(token.Tipo_token != 7)
+                //{
+                //    writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
+                //    writer.WriteLine("");
+                //    Console.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
+                //    Console.WriteLine("");
+                //}
                 
             }
             writer.Close();
