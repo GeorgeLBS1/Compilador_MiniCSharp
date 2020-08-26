@@ -17,7 +17,7 @@ namespace Compilador_MiniCSharp
             @"^void$|^int$|^double$|^bool$|^string$|^class$|^const$|^interface$|^null$|^this$|^for$|^while$|^foreach$|^if$|^else$|^return$|^break$|^New$|^NewArray$|^Console$|^WriteLine$", //Palabras reservadas, 0
             @"^(true|false)$", //Constantes bool, 1
             @"^\d+((\.)(E\+|e\+)?\d+)?$", //Constantes double incluido notación exponencial, 2
-            @"^[0]([x]|[X])((\d([a-f]|\d)*)|([a-f]([a-f]|\d)+))$", //Constantes Enteros incluidos el hexadecimal, 3         
+            @"^[0]([x]|[X])(((\d|(([a-f]|[A-F])|\d)*)|([a-f]([a-f]|\d)+)))*$", //Constantes Enteros incluidos el hexadecimal, 3         
             @"^\+$|^\-$|^\/$|^\*$|^\%$|^\<$|^\<=$|^\>$|^\>\=$|^\=$|^\=\=$|^\!=$|^\&\&$|^\|\|$|^\!$|^\;$|^\,$|^\.$|^\[\]$|^\[$|^\]|^\(\)$|^\{$|^\}$|^\{\}$|^\($|^\)$", //Operadores y signos de puntuación, 4
             @"^[A-z|$]([A-z0-9$]){0,30}$", //Identificadores de largo máximo = 30, 5
             "^\".+\"$", //String, 6
