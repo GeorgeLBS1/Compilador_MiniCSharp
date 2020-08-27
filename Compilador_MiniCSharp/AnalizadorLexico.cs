@@ -280,14 +280,14 @@ namespace Compilador_MiniCSharp
                     Errores = true;
                     CantidadErrores++;
                 }
-                //else if(token.Tipo_token != 7)
-                //{
-                //    writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
-                //    writer.WriteLine("");
-                //    Console.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
-                //    Console.WriteLine("");
-                //}
-                
+                else if (token.Tipo_token != 7)
+                {
+                    writer.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
+                    writer.WriteLine("");
+                    //Console.WriteLine(token.Palabra + @"         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token);
+                    //Console.WriteLine("");
+                }
+
             }
             writer.Close();
         }
