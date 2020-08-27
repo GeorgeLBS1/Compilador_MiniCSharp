@@ -3,6 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon>Iconsmind-Outline-Server-2.ico</ApplicationIcon>
+    <AssemblyName>MiniC</AssemblyName>
+    <RootNamespace>MiniC</RootNamespace>
   </PropertyGroup>
 
 </Project>
