@@ -241,7 +241,7 @@ namespace Compilador_MiniCSharp
             {
                 if (Tipo_token == "Token NO RECONOCIDO" && token.Tipo_token != 15)
                 {
-                    if (Regex.IsMatch(token.Palabra, ER[9]) == true)
+                    if (Regex.IsMatch(token.Palabra, ER[9]) == true && token.Palabra.Length > 1)
                     {
                         writer.WriteLine(token.Palabra + @" ******ERROR, posiblemente falten comillas de cierre.         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
                         writer.WriteLine("");
