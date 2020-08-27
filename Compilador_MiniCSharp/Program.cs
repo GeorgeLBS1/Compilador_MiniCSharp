@@ -37,21 +37,29 @@ namespace Compilador_MiniCSharp
             string archivo = Console.ReadLine();
 
             archivo = archivo.Trim('"');
-            AnalizadorLexico analizador = new AnalizadorLexico();
-            analizador.LeerArchivo(archivo);
-            if (analizador.Errores == false)
+            if (archivo != "")
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Archivo generado con éxito, 0 errores");
-                Console.ForegroundColor = ConsoleColor.White;
+                AnalizadorLexico analizador = new AnalizadorLexico();
+                analizador.LeerArchivo(archivo);
+                if (analizador.Errores == false)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Archivo generado con éxito, 0 errores");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine($"Cantidad de errores: {analizador.CantidadErrores}");
+                    Console.WriteLine("Archivo generado");
+                }
+
+                Console.ReadKey();
             }
             else
-            {                
-                Console.WriteLine($"Cantidad de errores: {analizador.CantidadErrores}");
-                Console.WriteLine("Archivo generado");                
+            {
+                Console.WriteLine("Ruta no válida");
             }
-
-            Console.ReadKey();
+            
         }
     }
 }
