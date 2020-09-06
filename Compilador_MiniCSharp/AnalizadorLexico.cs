@@ -16,7 +16,7 @@ namespace Compilador_MiniCSharp
         public static List<string> Comentarios = new List<string>(); //Se guardan los comentarios
         readonly List<string> ER = new List<string>() //Lista que contiene todas las expresiones regulares a usar para analizar el archivo y la sintaxis de este
         {
-            @"^void$|^int$|^double$|^bool$|^string$|^class$|^const$|^interface$|^null$|^this$|^for$|^while$|^foreach$|^if$|^else$|^return$|^break$|^New$|^NewArray$|^Console$|^WriteLine$", //Palabras reservadas, 0
+            @"^void$|^int$|^double$|^bool$|^string$|^class$|^const$|^interface$|^null$|^this$|^for$|^while$|^foreach$|^if$|^else$|^return$|^break$|^New$|^NewArray$|^Print$|^Console$|^WriteLine$", //Palabras reservadas, 0
             @"^(true|false)$", //Constantes bool, 1
             @"^\d+((\.)(E(\+|[-]|)|e(\+|[-]|))?\d+)?$", //Constantes double incluido notación exponencial, 2
             @"^[0]([x]|[X])(((\d|(([a-f]|[A-F])|\d)*)|([a-f]([a-f]|\d)+)))*$", //Constantes Enteros incluidos el hexadecimal, 3         
