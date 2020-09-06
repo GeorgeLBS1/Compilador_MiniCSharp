@@ -18,7 +18,7 @@ namespace Compilador_MiniCSharp
         {
             @"^void$|^int$|^double$|^bool$|^string$|^class$|^const$|^interface$|^null$|^this$|^for$|^while$|^foreach$|^if$|^else$|^return$|^break$|^New$|^NewArray$|^Console$|^WriteLine$", //Palabras reservadas, 0
             @"^(true|false)$", //Constantes bool, 1
-            @"^\d+((\.)(E\+|e\+)?\d+)?$", //Constantes double incluido notación exponencial, 2
+            @"^\d+((\.)(E(\+|[-]|)|e(\+|[-]|))?\d+)?$", //Constantes double incluido notación exponencial, 2
             @"^[0]([x]|[X])(((\d|(([a-f]|[A-F])|\d)*)|([a-f]([a-f]|\d)+)))*$", //Constantes Enteros incluidos el hexadecimal, 3         
             @"^\+$|^\-$|^\/$|^\*$|^\%$|^\<$|^\<=$|^\>$|^\>\=$|^\=$|^\=\=$|^\!=$|^\&\&$|^\|\|$|^\!$|^\;$|^\,$|^\.$|^\[\]$|^\[$|^\]|^\(\)$|^\{$|^\}$|^\{\}$|^\($|^\)$", //Operadores y signos de puntuación, 4
             @"^[A-z|$]([A-z0-9$]){0,29}$", //Identificadores de largo máximo = 30, 5
@@ -26,12 +26,13 @@ namespace Compilador_MiniCSharp
             @"^[\/][\/].+$", //Comentarios linea simple, 7
             @"^\s+$", // espacio vacío o secuencia de espacios vacíos, 8
             "^\"[^\"]*$", // Posible Secuencia De String, 9
-            @"^[0]([x]|[X])", //Posible secuencia de número hexadecimales, 10
+            @"^[0]([x]|[X])$", //Posible secuencia de número hexadecimales, 10
             @"^\d+(\.)$", //Posible secuencia double, 11
-            @"^\d+(\.)(E\+|e\+)$", //Posible secuencia double, 12
-            @"^\d+(\.)(E|e)", //Posible secuencia double, 13
+            @"^\d+(\.)(E(\+|[-]|)|e(\+|[-]|))$", //Posible secuencia double, 12
+            @"^\d+(\.)(E|e)$", //Posible secuencia double, 13
             @"^[\/][\/]$", //Posibles Comentarios linea simple, 14
             @"^[A-z|$]([A-z0-9$]){30,}$", //Identificadores si se pasa de 31 para manejo de error, 15
+            @"^\*?\/$", //Cierre de comentario sin abrir previamente comentario, 16
         };
         public List<Token> ListaDeTokens = new List<Token>(); //Se listan todos los tokens encontrados en el archivo
         public static string ruta = string.Empty; //Ruta del archivo para generar el de salida
@@ -266,7 +267,7 @@ namespace Compilador_MiniCSharp
                     
                     
                 }
-                else if (token.Tipo_token == 15)
+                else if (token.Tipo_token == 15) //Cuando se excede un identificador y se usan más de 30 caracteres
                 {
                     token.Palabra = CortarID(token.Palabra);
                     token.Tipo_token = 5;
@@ -275,6 +276,18 @@ namespace Compilador_MiniCSharp
                     writer.WriteLine("");
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.WriteLine(token.Palabra + @" ******ERROR, el identificador excede la cantidad de caracteres que puede tener. Se conservarán solo los primeros 30.       Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("");
+                    Errores = true;
+                    CantidadErrores++;
+                }
+                else if (token.Tipo_token == 16) //advertencia de signo de cierre de comentario sin abrir. */
+                {
+                    Tipo_token = "Comentario cerrado pero nunca abierto";
+                    writer.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
+                    writer.WriteLine("");
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.WriteLine(token.Palabra + @" ******ERROR         Linea: " + token.Linea + ",     Columna: " + token.CInicio + "-" + token.CFinal + ",    ES: " + Tipo_token + "*********");
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("");
                     Errores = true;
