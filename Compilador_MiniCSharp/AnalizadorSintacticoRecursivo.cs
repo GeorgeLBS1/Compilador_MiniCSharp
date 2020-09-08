@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace MiniC
 {
@@ -117,6 +118,7 @@ namespace MiniC
         {
             if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5) //Entrar a VariableDecl
             {
+                
                 Parse_VariableDecl();
             }
             else if(Cola_Tokens.Peek().Palabra == "void" || (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5)) //se va a analizar por el lado de FunctionDecl
@@ -284,13 +286,10 @@ namespace MiniC
                 Parse_ExprM();
                 Parse_Expr2();
             }
-            else if (true) //Si viene Epsilon
-            {
-
-            }
+         
             else
             {
-                Console.WriteLine("Error"); //MODIFICAR
+                return;
             }
 
         }
@@ -299,56 +298,158 @@ namespace MiniC
             Parse_ExprN();
             Parse_ExprM2();
         }
+      
         void Parse_ExprM2() //Parser de ExprM'
         {
             if (Cola_Tokens.Peek().Palabra == "==")
             {
                 MatchToken("==");
-                Pase_ExprN();
+                Parse_ExprN();
                 Parse_ExprM2();
             }
             else if (Cola_Tokens.Peek().Palabra == "!=")
             {
                 MatchToken("!=");
-                Pase_ExprN();
+                Parse_ExprN();
                 Parse_ExprM2();
             }
             else if (Cola_Tokens.Peek().Palabra == ">=")
             {
                 MatchToken(">=");
-                Pase_ExprN();
+                Parse_ExprN();
                 Parse_ExprM2();
             }
             else if (Cola_Tokens.Peek().Palabra == "<=")
             {
                 MatchToken("<=");
-                Pase_ExprN();
+                Parse_ExprN();
                 Parse_ExprM2();
             }
             else if (Cola_Tokens.Peek().Palabra == "<")
             {
                 MatchToken("<");
-                Pase_ExprN();
+                Parse_ExprN();
                 Parse_ExprM2();
             }
             else if (Cola_Tokens.Peek().Palabra == ">")
             {
                 MatchToken(">");
-                Pase_ExprN();
+                Parse_ExprN();
                 Parse_ExprM2();
             }
-            else if (true) //Epsilon 
-            {
-                
-            }
+        
             else
             {
-                Console.WriteLine("Error"); //MODIFICAR
+                return;
             }
         }
 
+        void Parse_ExprN()
+        {
+            Parse_ExprO();
+            Parse_ExprN2();
 
+        }
+        void Parse_ExprN2()
+        {
+            if(Cola_Tokens.Peek().Palabra == "+")
+            {
+                MatchToken("+");
+                Parse_ExprO();
+                Parse_ExprN2();
+            }
+            else if(Cola_Tokens.Peek().Palabra == "-")
+            {
+                MatchToken("-");
+                Parse_ExprO();
+                Parse_ExprN2();
+            }
+            else 
+            {
+                return;
+            }
+        }
+        void Parse_ExprO()
+        {
+            Parse_ExprP();
+            Parse_ExpreO2();
+        }
+        void Parse_ExpreO2()
+        {
+            if (Cola_Tokens.Peek().Palabra == "/")
+            {
+                MatchToken("/");
+                Parse_ExprP();
+                Parse_ExpreO2();
+            }
+            else if (Cola_Tokens.Peek().Palabra == "*")
+            {
+                MatchToken("*");
+                Parse_ExprP();
+                Parse_ExpreO2();
+            }
+            else if (Cola_Tokens.Peek().Palabra == "%")
+            {
+                MatchToken("%");
+                Parse_ExprP();
+                Parse_ExpreO2();
+            }
+            else
+            {
+                return;
+            }
+        }
+        void Parse_ExprP()
+        {
+            if (Cola_Tokens.Peek().Tipo_token == 3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null")
+            {
+                Parse_Constant();
+            }
+            else if(Cola_Tokens.Peek().Palabra == "this")
+            {
+                MatchToken("this");
+            }
+            else if (Cola_Tokens.Peek().Palabra == "(")
+            {
+                MatchToken("(");
+                Parse_Expr();
+                MatchToken(")");
+            }
+            else if (Cola_Tokens.Peek().Palabra == "-")
+            {
+                MatchToken("-");
+                Parse_Expr();
+            }
+            else if (Cola_Tokens.Peek().Palabra == "!")
+            {
+                MatchToken("!");
+                Parse_Expr();
+            }
+            else if (Cola_Tokens.Peek().Palabra == "new")
+            {
+                MatchToken("new");
+                MatchToken("(");
+                MatchToken("ident");
+                MatchToken(")");
+            }
+            else if(Cola_Tokens.Peek().Tipo_token ==5)
+            {
+                Parse_LValue();
+                if(Cola_Tokens.Peek().Palabra == "=")
+                {
+                    MatchToken("=");
+                    Parse_Expr();
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+        void Parse_LValue()
+        {
 
+        }
 
         void Parse_Constant() //Parser para constantes
         {
