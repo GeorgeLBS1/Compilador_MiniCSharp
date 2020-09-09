@@ -118,13 +118,30 @@ namespace MiniC
         {
             if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5) //Entrar a VariableDecl
             {
-                
-                Parse_VariableDecl();
+                Parse_Type2();
+                MatchToken("ident");
+                if (Cola_Tokens.Peek().Palabra == "[]" || Cola_Tokens.Peek().Palabra ==";") //Si es identificador
+                {
+                    if (Cola_Tokens.Peek().Palabra == "[]")
+                    {
+                        MatchToken("[]");
+                    }
+                    MatchToken(";");
+                }
+                else if (Cola_Tokens.Peek().Palabra == "(") //Si es funcion
+                {
+                    Parse_FunctionDecl();
+                }                
+                else
+                {
+                    //ERROR
+                }
             }
-            else if(Cola_Tokens.Peek().Palabra == "void" || (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5)) //se va a analizar por el lado de FunctionDecl
+            else if(Cola_Tokens.Peek().Palabra == "void") //se va a analizar por el lado de FunctionDecl
             {
                 Parse_FunctionDecl();
             }
+
         }
         void Parse_VariableDecl()
         {
@@ -143,6 +160,10 @@ namespace MiniC
             if (Cola_Tokens.Peek().Palabra == "[]") //En dado caso venga []
             {
                 MatchToken("[]");
+            }
+            else
+            {
+                return;
             }
             //Si viene epsilon
         }
@@ -180,12 +201,12 @@ namespace MiniC
         {
             if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5) //Si viene un Type
             {
-                Parse_Type(); //Parsear Type
                 Parse_FunctionDecl2(); //Parsear functionDecl'
             }
             else if (Cola_Tokens.Peek().Palabra == "void") //Si viene la palabra void
             {
                 MatchToken("void"); //Hacer matchtoken de void
+                MatchToken("ident"); //Hacer matchtoken de void
                 Parse_FunctionDecl2(); //Parsear functionDecl'
             }
             else
@@ -195,7 +216,6 @@ namespace MiniC
         }
         void Parse_FunctionDecl2()
         {
-            MatchToken("ident"); //Hacer match del token ident
             MatchToken("("); //Hacer match del token "("
             Parse_Formals(); //Parsear Formals
             MatchToken(")"); //Hacer match del token ")"
@@ -207,15 +227,30 @@ namespace MiniC
             {
                 Parse_Variable2(); //Parsear Variable'
             }
+            else
+            {
+                return;
+            }
         }
         void Parse_Variable2() //Parser de Variable'
         {
             Parse_Variable(); //Parsear variable
-            if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5)//Si viene otra variable
+            if (Cola_Tokens.Peek().Palabra == ",")
             {
-                Parse_Variable2(); //Parsear variable'
+                MatchToken(",");
+                if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5)//Si viene otra variable
+                {
+                    Parse_Variable2(); //Parsear variable'
+                }
+                else
+                {
+                    //ERROR
+                }
             }
-            
+            else
+            {
+                return;
+            }
         }
         void Parse_Stmt2()
         {
@@ -224,21 +259,28 @@ namespace MiniC
                 Parse_Stmt(); //Parsear Stmt
                 Parse_Stmt2(); //Parsear Stmt'
             }
+            else
+            {
+                return;
+            }
         }
         void Parse_Stmt()
         {
             if (Cola_Tokens.Peek().Palabra == "while") //En dado caso el Stmt sea un while
             {
                 Parse_WhileStmt(); //Parsear while
+                Parse_Stmt2();
             }
             else if (Cola_Tokens.Peek().Palabra == "Print") //En dado caso el stmt sea un print
             {
                 Parse_PrintStmt(); //Parsear print
+                Parse_Stmt2();
             }
             else if (Cola_Tokens.Peek().Tipo_token == 5 || Cola_Tokens.Peek().Tipo_token == 3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null" || Cola_Tokens.Peek().Palabra == "this" || Cola_Tokens.Peek().Palabra == "(" || Cola_Tokens.Peek().Palabra == "-" || Cola_Tokens.Peek().Palabra == "!") //En dado caso sea una Expresión
             {
                 Parse_Expr(); //Parse de Expresión
                 MatchToken(","); //Match con la coma que puede venir después de una exp
+                Parse_Stmt2();
             }
             else
             {
@@ -286,7 +328,6 @@ namespace MiniC
                 Parse_ExprM();
                 Parse_Expr2();
             }
-         
             else
             {
                 return;
