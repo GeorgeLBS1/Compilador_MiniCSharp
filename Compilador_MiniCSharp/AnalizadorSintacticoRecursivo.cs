@@ -469,6 +469,10 @@ namespace MiniC
                 MatchToken("ident");
                 MatchToken(")");
             }
+            else if(Cola_Tokens.Peek().Tipo_token == 3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null")
+            {
+                Parse_Constant();
+            }
             else if(Cola_Tokens.Peek().Palabra == "=")
             {
                 MatchToken("=");
