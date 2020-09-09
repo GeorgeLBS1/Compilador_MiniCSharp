@@ -83,6 +83,7 @@ namespace MiniC
                         }
                         else
                         {
+
                             Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}. Se esperaba un: {expected}");
                         }
                         break;
@@ -114,27 +115,49 @@ namespace MiniC
             
 
         }
+        bool Verificar = false;
         void Parse_Decl()
         {
             if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5) //Entrar a VariableDecl
             {
-                Parse_Type2();
-                MatchToken("ident");
-                if (Cola_Tokens.Peek().Palabra == "[]" || Cola_Tokens.Peek().Palabra ==";") //Si es identificador
+                if (Cola_Tokens.Peek().Tipo_token == 0)
                 {
-                    if (Cola_Tokens.Peek().Palabra == "[]")
-                    {
-                        MatchToken("[]");
-                    }
-                    MatchToken(";");
+                    Verificar = true;
                 }
-                else if (Cola_Tokens.Peek().Palabra == "(") //Si es funcion
+
+                Parse_Type2();
+                if (Cola_Tokens.Peek().Tipo_token != 5)
                 {
-                    Parse_FunctionDecl();
-                }                
+                    if(Cola_Tokens.Peek().Tipo_token == 4 && !Verificar)
+                    {
+                        Parse_Expr();
+                        Verificar = false;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
                 else
                 {
-                    //ERROR
+                    MatchToken("ident");
+                    if (Cola_Tokens.Peek().Palabra == "[]" || Cola_Tokens.Peek().Palabra == ";") //Si es identificador
+                    {
+                        if (Cola_Tokens.Peek().Palabra == "[]")
+                        {
+                            MatchToken("[]");
+                        }
+                        MatchToken(";");
+                    }
+
+                    else if (Cola_Tokens.Peek().Palabra == "(") //Si es funcion
+                    {
+                        Parse_FunctionDecl();
+                    }
+                    else
+                    {
+                        //ERROR
+                    }
                 }
             }
             else if(Cola_Tokens.Peek().Palabra == "void") //se va a analizar por el lado de FunctionDecl
