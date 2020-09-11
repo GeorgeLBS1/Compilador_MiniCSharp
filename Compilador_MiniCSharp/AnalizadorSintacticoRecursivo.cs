@@ -299,7 +299,7 @@ namespace MiniC
         }
         void Parse_Stmt2()
         {
-            if (Cola_Tokens.Peek().Palabra == "while" || Cola_Tokens.Peek().Palabra == "Print" || Cola_Tokens.Peek().Tipo_token == 5 || Cola_Tokens.Peek().Tipo_token ==  3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null" || Cola_Tokens.Peek().Palabra == "this" || Cola_Tokens.Peek().Palabra == "(" || Cola_Tokens.Peek().Palabra == "-" || Cola_Tokens.Peek().Palabra == "!")
+            if (Cola_Tokens.Peek().Palabra == "while" || Cola_Tokens.Peek().Palabra == "Print" || Cola_Tokens.Peek().Tipo_token == 5 || Cola_Tokens.Peek().Tipo_token ==  3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null" || Cola_Tokens.Peek().Palabra == "this" || Cola_Tokens.Peek().Palabra == "(" || Cola_Tokens.Peek().Palabra == "=" || Cola_Tokens.Peek().Palabra == "-" || Cola_Tokens.Peek().Palabra == "!")
             {
                 Parse_Stmt(); //Parsear Stmt
                 Parse_Stmt2(); //Parsear Stmt'
