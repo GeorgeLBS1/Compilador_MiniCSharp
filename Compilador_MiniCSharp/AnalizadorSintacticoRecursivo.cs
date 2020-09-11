@@ -344,7 +344,16 @@ namespace MiniC
         void Parse_Expre2() //Parse de Expre'
         {
             Parse_Expr();
-            Parse_Expre2(); 
+            if (Cola_Tokens.Peek().Palabra == ",")
+            {
+                MatchToken(",");
+                Parse_Expre2();
+            }
+            else
+            {
+                return;
+            }
+            
         }
         void Parse_Expr() //Parse de expre
         {
@@ -534,6 +543,13 @@ namespace MiniC
             }
             else
             {
+                if (Cola_Tokens.Count > 0)
+                {
+                    if (Cola_Tokens.Peek().Tipo_token == 0)
+                    {
+                        Parse_Stmt2();
+                    }
+                }
                 return;
             }
         }
