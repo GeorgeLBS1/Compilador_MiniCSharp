@@ -88,16 +88,16 @@ namespace MiniC
                         }
                         break;
                 }
-                if (expected != "ident") //En caso de que se espere algo diferente a ident
-                {
-                    
-                }
-                else
-                {
-                    
-                }
                 
-            }            
+                
+            }
+            if (Cola_Tokens.Count == 0)
+            {
+                Environment.Exit(1);
+            }
+
+
+
         }
 
 
@@ -290,6 +290,7 @@ namespace MiniC
                 Parse_Stmt(); //Parsear Stmt
                 Parse_Stmt2(); //Parsear Stmt'
             }
+            
             else
             {
                
@@ -478,6 +479,10 @@ namespace MiniC
             if(Cola_Tokens.Peek().Palabra == "this")
             {
                 MatchToken("this");
+                if (Cola_Tokens.Count > 0)
+                {
+                    Parse_Expr();
+                }
             }
             else if (Cola_Tokens.Peek().Palabra == "(")
             {
@@ -501,6 +506,10 @@ namespace MiniC
                 MatchToken("(");
                 MatchToken("ident");
                 MatchToken(")");
+                if (Cola_Tokens.Count > 0)
+                {
+                    Parse_Expr();
+                }
             }
             else if(Cola_Tokens.Peek().Tipo_token == 3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null")
             {
@@ -514,6 +523,10 @@ namespace MiniC
             else if(Cola_Tokens.Peek().Tipo_token ==5 || Cola_Tokens.Peek().Palabra == "." || Cola_Tokens.Peek().Palabra == "[")
             {
                 Parse_LValue();
+                if (Cola_Tokens.Count > 0)
+                {
+                    Parse_Expr();
+                }
                 
             }
             else
