@@ -127,31 +127,15 @@ namespace MiniC
             
 
         }
-        bool Verificar = false;
+      
         void Parse_Decl()
         {
             if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5) //Entrar a VariableDecl
             {
-                if (Cola_Tokens.Peek().Tipo_token == 0)
-                {
-                    Verificar = true;
-                }
+                
 
-                Parse_Type2();
-                if (Cola_Tokens.Peek().Tipo_token != 5)
-                {
-                    if(Cola_Tokens.Peek().Tipo_token == 4 && !Verificar)
-                    {
-                        Parse_Expr();
-                        Verificar = false;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                else
-                {
+                    Parse_Type2();
+             
                     MatchToken("ident");
                     if (Cola_Tokens.Peek().Palabra == "[]" || Cola_Tokens.Peek().Palabra == ";") //Si es identificador
                     {
@@ -170,7 +154,7 @@ namespace MiniC
                     {
                         Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}. Se esperaba un: {Cola_Tokens.Peek().Palabra}");
                     }
-                }
+                
             }
             else if(Cola_Tokens.Peek().Palabra == "void") //se va a analizar por el lado de FunctionDecl
             {
