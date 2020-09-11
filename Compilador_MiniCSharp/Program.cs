@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiniC;
+using System;
 using System.Threading;
 
 namespace Compilador_MiniCSharp
@@ -46,6 +47,8 @@ namespace Compilador_MiniCSharp
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Archivo generado con éxito, 0 errores");
                     Console.ForegroundColor = ConsoleColor.White;
+                    AnalizadorSintacticoRecursivo prueba = new AnalizadorSintacticoRecursivo(analizador.ListaDeTokens);
+                    prueba.Parse_Program();
                 }
                 else
                 {

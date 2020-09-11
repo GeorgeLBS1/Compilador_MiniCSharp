@@ -150,7 +150,7 @@ namespace MiniC
                         MatchToken(";");
                     }
 
-                    else if (Cola_Tokens.Peek().Palabra == "(") //Si es funcion
+                    else if (Cola_Tokens.Peek().Palabra == "()") //Si es funcion
                     {
                         Parse_FunctionDecl();
                     }
@@ -222,7 +222,7 @@ namespace MiniC
 
         void Parse_FunctionDecl()
         {
-            if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5) //Si viene un Type
+            if (Cola_Tokens.Peek().Palabra == "(" || Cola_Tokens.Peek().Palabra == "()") //Si viene un Type
             {
                 Parse_FunctionDecl2(); //Parsear functionDecl'
             }
@@ -284,6 +284,8 @@ namespace MiniC
             }
             else
             {
+               
+
                 return;
             }
         }
