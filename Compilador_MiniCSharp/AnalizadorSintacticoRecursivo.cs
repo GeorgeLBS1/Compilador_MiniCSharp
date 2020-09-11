@@ -31,7 +31,6 @@ namespace MiniC
                     case "ident": //En caso sea un ident comparar el tipo de token
                         if (Cola_Tokens.Peek().Tipo_token == 5) //Si el token es el que se esperaba
                         {
-                            Console.Write("ident ");
                             Cola_Tokens.Dequeue(); //Analizar el siguiente Token
                         }
                         else
@@ -42,7 +41,6 @@ namespace MiniC
                     case "intConstant": //En caso sea un numero el esperado comparar con tipo de token
                         if (Cola_Tokens.Peek().Tipo_token == 3) //Si el token es el que se esperaba
                         {
-                            Console.Write("intConstatne   ");
                             Cola_Tokens.Dequeue(); //Analizar el siguiente Token
                         }
                         else
@@ -53,7 +51,6 @@ namespace MiniC
                     case "doubleConstant":
                         if (Cola_Tokens.Peek().Tipo_token == 2) //Si el token es el que se esperaba
                         {
-                            Console.Write("Double  ");
                             Cola_Tokens.Dequeue(); //Analizar el siguiente Token
                         }
                         else
@@ -64,7 +61,6 @@ namespace MiniC
                     case "boolConstant":
                         if (Cola_Tokens.Peek().Tipo_token == 1) //Si el token es el que se esperaba
                         {
-                            Console.Write("BoolConsant   ");
                             Cola_Tokens.Dequeue(); //Analizar el siguiente Token
                         }
                         else
@@ -75,7 +71,6 @@ namespace MiniC
                     case "stringConstant":
                         if (Cola_Tokens.Peek().Tipo_token == 6) //Si el token es el que se esperaba
                         {
-                            Console.Write("StringConstatne    ");
                             Cola_Tokens.Dequeue(); //Analizar el siguiente Token
                         }
                         else
@@ -86,7 +81,6 @@ namespace MiniC
                     default: //En caso no sea un tipo de identificador o un constante de algun tipo comparar la palabra o caracter como tal
                         if (Cola_Tokens.Peek().Palabra == expected) //Si el token es el que se esperaba
                         {
-                            Console.Write(Cola_Tokens.Peek().Palabra +"   ");
                             Cola_Tokens.Dequeue(); //Analizar el siguiente Token
                         }
                         else
@@ -213,7 +207,7 @@ namespace MiniC
                         MatchToken("string"); //Match con token string
                         break;
                     default:
-                        Console.WriteLine("Error token no esperado"); //Modificar mensaje posteriormente
+                        Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}. Se esperaba un: int/double/bool/string");
                         break;
                 }
             }
@@ -255,7 +249,7 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("Error token no esperado"); //Modificar mensaje posteriormente
+                Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}.");
             }
         }
         void Parse_FunctionDecl2()
@@ -324,7 +318,7 @@ namespace MiniC
                 Parse_PrintStmt(); //Parsear print
                 Parse_Stmt2();
             }
-            else if (Cola_Tokens.Peek().Tipo_token == 5 || Cola_Tokens.Peek().Tipo_token == 3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null" || Cola_Tokens.Peek().Palabra == "this" || Cola_Tokens.Peek().Palabra == "(" || Cola_Tokens.Peek().Palabra == "-" || Cola_Tokens.Peek().Palabra == "!") //En dado caso sea una Expresión
+            else if (Cola_Tokens.Peek().Tipo_token == 5 || Cola_Tokens.Peek().Tipo_token == 3 || Cola_Tokens.Peek().Tipo_token == 2 || Cola_Tokens.Peek().Tipo_token == 1 || Cola_Tokens.Peek().Tipo_token == 6 || Cola_Tokens.Peek().Palabra == "null" || Cola_Tokens.Peek().Palabra == "this" || Cola_Tokens.Peek().Palabra == "(" || Cola_Tokens.Peek().Palabra == "-" || Cola_Tokens.Peek().Palabra == "!" || Cola_Tokens.Peek().Palabra == "=") //En dado caso sea una Expresión
             {
                 Parse_Expr(); //Parse de Expresión
                 MatchToken(","); //Match con la coma que puede venir después de una exp
@@ -332,7 +326,7 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("Error"); //Modificar despues
+                Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}. Palabra no esperada");
             }
         }
         void Parse_WhileStmt()
@@ -611,7 +605,7 @@ namespace MiniC
             }
             else
             {
-                Console.WriteLine("Error"); //MODIFICAR
+                Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}. Palabra no esperada");
             }
         }
     }
