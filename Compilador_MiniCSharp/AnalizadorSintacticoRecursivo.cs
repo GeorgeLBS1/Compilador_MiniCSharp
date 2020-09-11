@@ -224,7 +224,15 @@ namespace MiniC
         {
             if (Cola_Tokens.Peek().Palabra == "(" || Cola_Tokens.Peek().Palabra == "()") //Si viene un Type
             {
-                Parse_FunctionDecl2(); //Parsear functionDecl'
+                if (Cola_Tokens.Peek().Palabra == "(")
+                {
+                    Parse_FunctionDecl2(); //Parsear functionDecl'
+                }
+                else
+                {
+                    MatchToken("()");
+                    Parse_Stmt2();
+                }
             }
             else if (Cola_Tokens.Peek().Palabra == "void") //Si viene la palabra void
             {
