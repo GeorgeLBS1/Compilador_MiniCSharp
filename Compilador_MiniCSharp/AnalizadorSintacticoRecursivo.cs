@@ -93,17 +93,20 @@ namespace MiniC
             }
             if (Cola_Tokens.Count == 0)
             {
-                Environment.Exit(1);
+                FinAnalisis();
             }
 
 
 
         }
 
-
+        void FinAnalisis()
+        {
+            Console.WriteLine("Análisis sintáctico terminado");
+        }
         public void Parse_Program()
         {
-            Parse_Decl2(); //Parsear Decl'
+            Parse_Decl2(); //Parsear Decl'            
         }
         void Parse_Decl2()
         {
