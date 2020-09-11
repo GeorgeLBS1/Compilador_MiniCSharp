@@ -132,29 +132,37 @@ namespace MiniC
         {
             if (Lista_Types.Contains(Cola_Tokens.Peek().Palabra) == true || Cola_Tokens.Peek().Tipo_token == 5) //Entrar a VariableDecl
             {
-                
 
-                    Parse_Type2();
-             
-                    MatchToken("ident");
-                    if (Cola_Tokens.Peek().Palabra == "[]" || Cola_Tokens.Peek().Palabra == ";") //Si es identificador
+
+                Parse_Type2();
+
+                MatchToken("ident");
+                if (Cola_Tokens.Peek().Palabra == "[]" || Cola_Tokens.Peek().Palabra == ";") //Si es identificador
+                {
+                    if (Cola_Tokens.Peek().Palabra == "[]")
                     {
-                        if (Cola_Tokens.Peek().Palabra == "[]")
-                        {
-                            MatchToken("[]");
-                        }
-                        MatchToken(";");
+                        MatchToken("[]");
                     }
+                    MatchToken(";");
+                }
 
-                    else if (Cola_Tokens.Peek().Palabra == "()") //Si es funcion
+                else if (Cola_Tokens.Peek().Palabra == "()" || Cola_Tokens.Peek().Palabra == "(") //Si es funcion
+                {
+                    Parse_FunctionDecl();
+                }
+                else
+                {
+                    Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}. Se esperaba un: {Cola_Tokens.Peek().Palabra}");
+                    if (Cola_Tokens.Count > 0 && Lista_Types.Contains(Cola_Tokens.Peek().Palabra))
                     {
-                        Parse_FunctionDecl();
+                        Parse_Program();
                     }
                     else
                     {
-                        Console.WriteLine($"Error sintáctico en linea: {Cola_Tokens.Peek().Linea}, columnas: {Cola_Tokens.Peek().CInicio}-{Cola_Tokens.Peek().CFinal}. Se esperaba un: {Cola_Tokens.Peek().Palabra}");
+                        Parse_Stmt2();
                     }
-                
+                }
+
             }
             else if(Cola_Tokens.Peek().Palabra == "void") //se va a analizar por el lado de FunctionDecl
             {
@@ -270,6 +278,7 @@ namespace MiniC
         }
         void Parse_Variable2() //Parser de Variable'
         {
+            
             Parse_Variable(); //Parsear variable
             if (Cola_Tokens.Peek().Palabra == ",")
             {
