@@ -2,6 +2,16 @@
 Proyecto compiladores
 José Díaz, Marcelo Rosales.
 
+Laboratorio 1:
+
+
+1. La mayoria de errores son manejados por la gramática, debido a que por ejemplo al faltar un paretensis, la gramática tomará lo que sigue como parte
+de los Formals o Expr de dicha funcion o stmts. 
+
+2. La gramática debe iniciar con la declaración de una variable, una funcion o un void, no se puede iniciar con un Stmt o un Expr
+
+3. Cuando se haga un match token y este no sea el token esperado.
+
 ¿Cómo usarlo?
 El uso del proyecto es simple:
 
