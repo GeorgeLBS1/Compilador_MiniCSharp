@@ -33,6 +33,7 @@ namespace Compilador_MiniCSharp
             @"^[\/][\/]$", //Posibles Comentarios linea simple, 14
             @"^[A-z|$]([A-z0-9$]){30,}$", //Identificadores si se pasa de 31 para manejo de error, 15
             @"^\*?\/$", //Cierre de comentario sin abrir previamente comentario, 16
+            @"^(\d)+$",//numeros enteros positivos, 17
         };
         public List<Token> ListaDeTokens = new List<Token>(); //Se listan todos los tokens encontrados en el archivo
         public static string ruta = string.Empty; //Ruta del archivo para generar el de salida
@@ -217,7 +218,15 @@ namespace Compilador_MiniCSharp
                     Tipo_token = "T_Constante_booleana";
                     break;
                 case 2:
-                    Tipo_token = "T_Constante_double";
+                    if (Regex.IsMatch(token.Palabra, ER[17])) //Si encaja el lexema con cualquier expresión regular en la lista devolver el número de la lista
+                    {
+                        token.Tipo_token = 3;
+                        Tipo_token = "T_Constante_entero";
+                    }
+                    else
+                    {
+                        Tipo_token = "T_Constante_double";
+                    }                    
                     break;
                 case 3:
                     Tipo_token = "T_Constante_entero";
