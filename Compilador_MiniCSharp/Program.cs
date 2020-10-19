@@ -1,12 +1,15 @@
-﻿using System;
+﻿using MiniC;
+using System;
 using System.Threading;
-
 namespace Compilador_MiniCSharp
 {
     class Program
     {
         static void Main(string[] args)
         {
+           
+
+
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(@"  __  __ _       _  _____  _  _      _____                      _ _           _            ");
             Thread.Sleep(250);
