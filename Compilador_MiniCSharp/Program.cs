@@ -7,8 +7,9 @@ namespace Compilador_MiniCSharp
     {
         static void Main(string[] args)
         {
-           
 
+            LecturaGramatica lg = new LecturaGramatica();
+            lg.Leer("Gramatica.csv");
 
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(@"  __  __ _       _  _____  _  _      _____                      _ _           _            ");
