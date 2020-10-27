@@ -10,7 +10,7 @@ namespace MiniC
     {
         Dictionary<int, int> Gramatica = new Dictionary<int, int>();
         Dictionary<int, string> GramaticaLetras = new Dictionary<int, string>();
-        Dictionary<string, int[]> Transiciones = new Dictionary<string, int[]>();
+        Dictionary<string, string[]> Transiciones = new Dictionary<string, string[]>();
         Queue<int> PilaNumeros = new Queue<int>();
         Queue<string> PilaLetras = new Queue<string>();
         void LeerGramatica()
@@ -65,50 +65,56 @@ namespace MiniC
         public void AnalisisSintactico(Stack<string> Tokens)
         {
             LeerGramatica();
-            //llamar LeerTransiciones
-            //Llamar metodo para rellenar gramatica
-            int EstadoActual = 0;
+
+            LecturaGramatica modelo = new LecturaGramatica();
+            string path = Environment.CurrentDirectory;
+            var xx = path.Split(@"bin");
+            string ruta = xx[0] + "Gramatica.csv";
+            Transiciones = modelo.Leer(ruta);
+
+            string EstadoActual = "";
             int CantidadSimbolos = 0;
             string LlaveDiccionario = "";
             /*Estado 1 = ir a
              * Estado 2 = desplazar
              * Estado 3=  reducir
              * Estado 4 =aceptar
-            */            
+            */
             PilaNumeros.Enqueue(0);
-            LlaveDiccionario = PilaNumeros.Peek() + Tokens.Peek();
+            LlaveDiccionario = PilaNumeros.Peek() + "_" + Tokens.Peek();
             var Siguiente = Transiciones[LlaveDiccionario];
-            EstadoActual =Siguiente[0];
-          
+            EstadoActual = Siguiente[0].Substring(0,1);
 
 
-            while(EstadoActual != 5)
+
+            while (EstadoActual != "ACC")
             {
-                if(EstadoActual == 1)
+                if (EstadoActual == "1" || EstadoActual == "2" || EstadoActual == "3" || EstadoActual == "4" || EstadoActual == "5"
+                    || EstadoActual == "6" || EstadoActual == "7" || EstadoActual == "8" || EstadoActual == "9")  
                 {
                     //ir a
 
-                    PilaNumeros.Enqueue(Siguiente[1]);
-                    LlaveDiccionario = PilaNumeros.Peek() + Tokens.Peek();
+                    PilaNumeros.Enqueue(Convert.ToInt32(Siguiente[0]));
+                    LlaveDiccionario = PilaNumeros.Peek() + "_" + Tokens.Peek();
                     if (Transiciones.ContainsKey(LlaveDiccionario))
                     {
                         Siguiente = Transiciones[LlaveDiccionario];
-                        EstadoActual = Siguiente[0];
+                        EstadoActual =  Siguiente[0].Substring(0,1);
                     }
                     else
                     {
-                        EstadoActual = 6;
+                        EstadoActual = "Error";
                     }
 
                 }
-                else if(EstadoActual ==2)
+                else if (EstadoActual == "d")
                 {
                     //dessplazar
-                   
-                    PilaNumeros.Enqueue(Siguiente[1]);
+
+                    PilaNumeros.Enqueue(Convert.ToInt32(Siguiente[0].Substring(1,Siguiente[0].Length-1)));
                     PilaLetras.Enqueue(Tokens.Pop());
-                   
-                    LlaveDiccionario = PilaNumeros.Peek() + Tokens.Peek();
+
+                    LlaveDiccionario = PilaNumeros.Peek() + "_" + Tokens.Peek();
                     if (Transiciones.ContainsKey(LlaveDiccionario))
                     {
 
@@ -118,14 +124,14 @@ namespace MiniC
                     }
                     else
                     {
-                        EstadoActual = 6;
+                        EstadoActual = "Error";
                     }
 
                 }
-                else if (EstadoActual == 3)
+                else if (EstadoActual == "r")
                 {
                     // reducir
-                    CantidadSimbolos = Gramatica[Siguiente[1]];
+                    CantidadSimbolos = Gramatica[Convert.ToInt32(Siguiente[0].Substring(1, Siguiente[0].Length - 1))];
                     if (CantidadSimbolos != 0)
                     {
                         for (int i = 0; i < CantidadSimbolos; i++)
@@ -135,29 +141,26 @@ namespace MiniC
                         }
                     }
 
-                    PilaLetras.Enqueue(GramaticaLetras[Siguiente[1]]);
-                    LlaveDiccionario = PilaNumeros.Peek() + PilaLetras.Peek();
+                    PilaLetras.Enqueue(GramaticaLetras[Convert.ToInt32(Siguiente[0].Substring(1, Siguiente[0].Length - 1))]);
+                    LlaveDiccionario = PilaNumeros.Peek() + "_" + PilaLetras.Peek();
                     if (Transiciones.ContainsKey(LlaveDiccionario))
                     {
                         Siguiente = Transiciones[LlaveDiccionario];
-                        EstadoActual = Siguiente[0];
+                        EstadoActual = Siguiente[0].Substring(0,1);
                     }
                     else
                     {
-                        EstadoActual = 6;
+                        EstadoActual = "Error";
                     }
-
-
-
-
                 }
-                else if(EstadoActual == 4)
+                else if (EstadoActual == "a")
                 {
-                    EstadoActual = 5;
+                    EstadoActual = "ACC";
                 }
                 else
                 {
-                    //error
+                    Console.WriteLine("Error en token: " + Tokens.Peek());
+                    return;
                 }
             }
 

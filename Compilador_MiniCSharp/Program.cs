@@ -11,12 +11,17 @@ namespace Compilador_MiniCSharp
         static void Main(string[] args)
         {
             //obtener la ruta
-            string path = Environment.CurrentDirectory;
-            var xx = path.Split(@"bin");
-            string ruta = xx[0]+"Gramatica.csv";
+            string x = "hola";
+            string y = x.Substring(0, 1);
+            if (Convert.ToInt32(y) != 1)
+            {
 
-            LecturaGramatica lg = new LecturaGramatica();
-            lg.Leer(ruta);
+            }
+            else
+            {
+                Console.WriteLine("hola");
+            }
+     
 
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(@"  __  __ _       _  _____  _  _      _____                      _ _           _            ");
