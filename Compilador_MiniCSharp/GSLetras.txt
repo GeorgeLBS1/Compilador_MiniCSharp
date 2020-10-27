@@ -18,7 +18,7 @@
 17,Type
 18,Type'
 19,Type'
-20,unctionDecl
+20,FunctionDecl
 21,FunctionDecl
 22,FunctionDecl'
 23,Formals
@@ -41,14 +41,14 @@
 40,Prototype
 41,Prototype'
 42,StmtBlock
-43,StmtBlock' 	    
+43,StmtBlock'
 44,StmtBlock1'
 45,StmtBlock1'
 46,StmtBlock2'
 47,StmtBlock2'
 48,StmtBlock3'
 49,StmtBlock3'
-50,Stmt 
+50,Stmt
 51,Stmt
 52,Stmt
 53,Stmt

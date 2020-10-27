@@ -54,7 +54,7 @@ namespace Compilador_MiniCSharp
                     Console.WriteLine("Archivo generado con éxito, 0 errores");
                     Console.ForegroundColor = ConsoleColor.White;
                     Queue<Token> ColaTokens = new Queue<Token>();
-                    
+
                     foreach(var item in analizador.ListaDeTokens)
                     {
                         Token temp = item;
@@ -83,8 +83,10 @@ namespace Compilador_MiniCSharp
                         Console.WriteLine(temp.Palabra);
                         
                     }
+                    Token dolar = new Token("$", 0, 0, 0, 0);
+                    ColaTokens.Enqueue(dolar);
 
-                    
+
                     AnalizadorSintactico modelo = new AnalizadorSintactico();
                     modelo.AnalisisSintactico(ColaTokens);
                     

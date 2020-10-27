@@ -72,14 +72,14 @@ namespace MiniC
             string ruta = xx[0] + "Gramatica.csv";
             Transiciones = modelo.Leer(ruta);
 
+
+
+            
+
             string EstadoActual = "";
             int CantidadSimbolos = 0;
             string LlaveDiccionario = "";
-            /*Estado 1 = ir a
-             * Estado 2 = desplazar
-             * Estado 3=  reducir
-             * Estado 4 =aceptar
-            */
+          
             PilaNumeros.Push(0);
             LlaveDiccionario = PilaNumeros.Peek() + "_" + Tokens.Peek().Palabra;
             var Siguiente = Transiciones[LlaveDiccionario];
@@ -101,7 +101,7 @@ namespace MiniC
                         Siguiente = Transiciones[LlaveDiccionario];
                         if (Siguiente.Length == 1)
                         {
-                            if (Siguiente[0] == "")
+                            if (Siguiente[0] != "")
                             {
 
 
@@ -210,7 +210,7 @@ namespace MiniC
                         Siguiente = Transiciones[LlaveDiccionario];
                         if (Siguiente.Length == 1)
                         {
-                            if (Siguiente[0] == "")
+                            if (Siguiente[0] != "")
                             {
                                 EstadoActual = Siguiente[0].Substring(0, 1);
                             }
@@ -251,6 +251,7 @@ namespace MiniC
                 }
                 else
                 {
+                    Console.WriteLine(LlaveDiccionario);
                     Console.WriteLine("Error en linea"+ Tokens.Peek().Linea +"Error en token: " + Tokens.Peek().Palabra);
 
                     return;
