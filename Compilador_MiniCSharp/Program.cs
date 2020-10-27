@@ -1,5 +1,8 @@
 ﻿using MiniC;
 using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 namespace Compilador_MiniCSharp
 {
@@ -7,9 +10,13 @@ namespace Compilador_MiniCSharp
     {
         static void Main(string[] args)
         {
+            //obtener la ruta
+            string path = Environment.CurrentDirectory;
+            var xx = path.Split(@"bin");
+            string ruta = xx[0]+"Gramatica.csv";
 
             LecturaGramatica lg = new LecturaGramatica();
-            lg.Leer("Gramatica.csv");
+            lg.Leer(ruta);
 
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(@"  __  __ _       _  _____  _  _      _____                      _ _           _            ");
