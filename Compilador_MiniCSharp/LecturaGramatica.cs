@@ -8,7 +8,7 @@ namespace MiniC
     public class LecturaGramatica
     {
         List<string[]> lineas = new List<string[]>();
-        Dictionary<Campo, string[]> Tabla = new Dictionary<Campo, string[]>();
+        Dictionary<string, string[]> Tabla = new Dictionary<string, string[]>();
         Dictionary<int, string> Simbolos = new Dictionary<int, string>();
         public void Leer(string path)
         {
@@ -47,7 +47,7 @@ namespace MiniC
                 for (int accion = 0; accion < lineas[0].Length; accion++)
                 {
                     Campo insertar = new Campo(Convert.ToString(estado), Simbolos[accion]);
-                    Tabla.Add(insertar, lineas[estado][accion].Split('-'));
+                    Tabla.Add(insertar.Identificador, lineas[estado][accion].Split('-'));
                 }
             }
 
@@ -57,7 +57,7 @@ namespace MiniC
             {
                 if (item.Value[0].Length > 0)
                 {
-                    Console.WriteLine($"{item.Key.Estado}, {item.Key.Simbolo} --> {item.Value[0]}");
+                    Console.WriteLine($"{item.Key} --> {item.Value[0]}");
                 }
 
             }
