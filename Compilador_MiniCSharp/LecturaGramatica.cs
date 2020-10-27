@@ -10,7 +10,7 @@ namespace MiniC
         List<string[]> lineas = new List<string[]>();
         Dictionary<string, string[]> Tabla = new Dictionary<string, string[]>();
         Dictionary<int, string> Simbolos = new Dictionary<int, string>();
-        public void Leer(string path)
+        public Dictionary<string, string[]> Leer(string path)
         {
             StreamReader reader = new StreamReader(path);
             string linea;
@@ -64,8 +64,9 @@ namespace MiniC
 
 
             //BORRAR ;PUNTO DE CHECKEO
-            int cantidad = TitulosList.Count;
-            Console.WriteLine(Convert.ToString(cantidad)); //chequeo
+            
+      
+            return Tabla;
         }
     }
 }
