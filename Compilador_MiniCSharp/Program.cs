@@ -10,17 +10,7 @@ namespace Compilador_MiniCSharp
     {
         static void Main(string[] args)
         {
-            //obtener la ruta
-            string x = "hola";
-            string y = x.Substring(0, 1);
-            if (Convert.ToInt32(y) != 1)
-            {
-
-            }
-            else
-            {
-                Console.WriteLine("hola");
-            }
+           
      
 
             Console.BackgroundColor = ConsoleColor.DarkBlue;

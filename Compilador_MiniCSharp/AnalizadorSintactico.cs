@@ -99,7 +99,28 @@ namespace MiniC
                     if (Transiciones.ContainsKey(LlaveDiccionario))
                     {
                         Siguiente = Transiciones[LlaveDiccionario];
-                        EstadoActual =  Siguiente[0].Substring(0,1);
+                        if (Siguiente.Length == 1)
+                        {
+                            EstadoActual = Siguiente[0].Substring(0, 1);
+                        }
+                        else
+                        {
+                            if(Tokens.Peek() == "else")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else if(Tokens.Peek() == ".")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else
+                            {
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            //conflicto
+                        }
                     }
                     else
                     {
@@ -120,7 +141,31 @@ namespace MiniC
 
 
                         Siguiente = Transiciones[LlaveDiccionario];
-                        EstadoActual = Siguiente[0];
+
+                        if (Siguiente.Length == 1)
+                        {
+                            EstadoActual = Siguiente[0];
+                        }
+                        else
+                        {
+
+
+                            //conflicto
+                            if (Tokens.Peek() == "else")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else if (Tokens.Peek() == ".")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else
+                            {
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                        }
                     }
                     else
                     {
@@ -146,7 +191,28 @@ namespace MiniC
                     if (Transiciones.ContainsKey(LlaveDiccionario))
                     {
                         Siguiente = Transiciones[LlaveDiccionario];
-                        EstadoActual = Siguiente[0].Substring(0,1);
+                        if (Siguiente.Length == 1)
+                        {
+                            EstadoActual = Siguiente[0].Substring(0, 1);
+                        }
+                        else
+                        {
+                            //conflicto
+                            if (Tokens.Peek() == "else")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else if (Tokens.Peek() == ".")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else
+                            {
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                        }
                     }
                     else
                     {
@@ -155,7 +221,9 @@ namespace MiniC
                 }
                 else if (EstadoActual == "a")
                 {
+                   
                     EstadoActual = "ACC";
+                    Console.WriteLine("El analisis sintactico se completo con exito");
                 }
                 else
                 {
@@ -164,7 +232,8 @@ namespace MiniC
                 }
             }
 
-
+            limpiar();
+            return;
         }
 
 
