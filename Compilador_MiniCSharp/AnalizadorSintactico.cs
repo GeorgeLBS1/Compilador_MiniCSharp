@@ -16,8 +16,10 @@ namespace MiniC
         void LeerGramatica()
         {
             string[] linea;
-
-            using (var file = new FileStream("Gcaracter.txt", FileMode.Open))
+            string path = Environment.CurrentDirectory;
+            var xx = path.Split(@"bin");
+            string ruta = xx[0] + "Gcaracter.txt";
+            using (var file = new FileStream(ruta, FileMode.Open))
             {
                 using (var lector = new StreamReader(file))
                 {
@@ -30,7 +32,10 @@ namespace MiniC
 
                 }
             }
-            using (var file = new FileStream("GSLetras.txt", FileMode.Open))
+            string path2 = Environment.CurrentDirectory;
+            var xx2 = path2.Split(@"bin");
+            string ruta2 = xx2[0] + "GSLetras.txt";
+            using (var file = new FileStream(ruta2, FileMode.Open))
             {
                 using (var lector = new StreamReader(file))
                 {
