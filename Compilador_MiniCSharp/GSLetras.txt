@@ -27,7 +27,7 @@
 26,ClassDecl
 27,ClassDecl'  
 28,ClassDecl'
-39,ClassDecl1'
+29,ClassDecl1'
 30,ClassDecl1'
 31,ClassDecl2' 
 32,ClassDecl2'

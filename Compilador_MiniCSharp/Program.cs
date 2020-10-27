@@ -1,5 +1,6 @@
 ﻿using MiniC;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
@@ -52,6 +53,42 @@ namespace Compilador_MiniCSharp
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Archivo generado con éxito, 0 errores");
                     Console.ForegroundColor = ConsoleColor.White;
+                    Queue<Token> ColaTokens = new Queue<Token>();
+                    
+                    foreach(var item in analizador.ListaDeTokens)
+                    {
+                        Token temp = item;
+                        if(item.Tipo_token == 5)
+                        {
+                            temp.Palabra = "ident";
+                        }
+                        if(item.Tipo_token == 3)
+                        {
+                            temp.Palabra = "intConstant";
+                        }
+                        if(item.Tipo_token == 1)
+                        {
+                            temp.Palabra = "boolConstant";
+                        }
+                        if(item.Tipo_token ==2)
+                        {
+                            temp.Palabra = "doubleConstant";
+                        }
+                        if(item.Tipo_token == 6)
+                        {
+                            temp.Palabra = "stringConstant";
+
+                        }
+                        ColaTokens.Enqueue(temp);
+                        Console.WriteLine(temp.Palabra);
+                        
+                    }
+
+                    
+                    AnalizadorSintactico modelo = new AnalizadorSintactico();
+                    modelo.AnalisisSintactico(ColaTokens);
+                    
+                    
                 }
                 else
                 {
