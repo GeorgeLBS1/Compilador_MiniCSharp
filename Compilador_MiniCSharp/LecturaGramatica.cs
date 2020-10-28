@@ -53,14 +53,14 @@ namespace MiniC
 
 
             //BORRAR ;PUNTO DE CHECKEO
-            foreach (var item in Tabla) //Impresión, quitar después
-            {
-                if (item.Value[0].Length > 0)
-                {
-                    Console.WriteLine($"{item.Key} --> {item.Value[0]}");
-                }
+            //foreach (var item in Tabla) //Impresión, quitar después
+            //{
+            //    if (item.Value[0].Length > 0)
+            //    {
+            //       // Console.WriteLine($"{item.Key} --> {item.Value[0]}");
+            //    }
 
-            }
+            //}
 
 
             //BORRAR ;PUNTO DE CHECKEO
