@@ -80,7 +80,7 @@ namespace Compilador_MiniCSharp
 
                         }
                         ColaTokens.Enqueue(temp);
-                        Console.WriteLine(temp.Palabra);
+               
                         
                     }
                     Token dolar = new Token("$", 0, 0, 0, 0);
