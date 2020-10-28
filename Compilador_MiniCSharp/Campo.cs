@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MiniC
 {
-    public class Campo
+    class Campo
     {
         public string Estado { get; set; }
         public string Simbolo { get; set; }
