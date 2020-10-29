@@ -16,6 +16,7 @@ namespace MiniC
         void LeerGramatica()
         {
             string[] linea;
+            char[] vector = { ' ', '\t' };
             string path = Environment.CurrentDirectory;
             var xx = path.Split(@"bin");
             string ruta = xx[0] + "Gcaracter.txt";
@@ -43,7 +44,7 @@ namespace MiniC
                     while (!lector.EndOfStream)
                     {
                         linea = lector.ReadLine().Split(',');
-                        GramaticaLetras.Add(Convert.ToInt32(linea[0]), linea[1]);
+                        GramaticaLetras.Add(Convert.ToInt32(linea[0]), linea[1].Trim(vector));
 
                     }
 
@@ -76,7 +77,7 @@ namespace MiniC
 
 
 
-
+            
             string EstadoActual = "";
             int CantidadSimbolos = 0;
             string LlaveDiccionario = "";
@@ -280,7 +281,10 @@ namespace MiniC
                         return;
                     }
                     Tokens.Dequeue();
-
+                    if(Tokens.Count == 0)
+                    {
+                        return;
+                    }
                     LlaveDiccionario = PilaNumeros.Peek() + "_" + Tokens.Peek().Palabra;
                     if (Transiciones.ContainsKey(LlaveDiccionario))
                     {
