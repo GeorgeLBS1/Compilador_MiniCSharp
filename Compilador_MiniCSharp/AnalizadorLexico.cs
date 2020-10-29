@@ -20,7 +20,7 @@ namespace Compilador_MiniCSharp
             @"^(true|false)$", //Constantes bool, 1
             @"^\d+((\.)(E(\+|[-]|)|e(\+|[-]|))?\d+)?$", //Constantes double incluido notación exponencial, 2
             @"^[0]([x]|[X])(((\d|(([a-f]|[A-F])|\d)*)|([a-f]([a-f]|\d)+)))*$", //Constantes Enteros incluidos el hexadecimal, 3         
-            @"^\+$|^\-$|^\/$|^\*$|^\%$|^\<$|^\<=$|^\>$|^\>\=$|^\=$|^\=\=$|^\!=$|^\&\&$|^\|\|$|^\!$|^\;$|^\,$|^\.$|^\[\]$|^\[$|^\]|^\(\)$|^\{$|^\}$|^\{\}$|^\($|^\)$", //Operadores y signos de puntuación, 4
+            @"^[:]$|^\+$|^\-$|^\/$|^\*$|^\%$|^\<$|^\<=$|^\>$|^\>\=$|^\=$|^\=\=$|^\!=$|^\&\&$|^\|\|$|^\!$|^\;$|^\,$|^\.$|^\[\]$|^\[$|^\]|^\(\)$|^\{$|^\}$|^\{\}$|^\($|^\)$", //Operadores y signos de puntuación, 4
             @"^[A-z|$]([A-z0-9$]){0,29}$", //Identificadores de largo máximo = 30, 5
             "^\".+\"$", //String, 6
             @"^[\/][\/].+$", //Comentarios linea simple, 7
