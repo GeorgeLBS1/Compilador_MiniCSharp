@@ -1,12 +1,19 @@
-﻿using System;
+﻿using MiniC;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
-
 namespace Compilador_MiniCSharp
 {
     class Program
     {
         static void Main(string[] args)
         {
+           
+     
+
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(@"  __  __ _       _  _____  _  _      _____                      _ _           _            ");
             Thread.Sleep(250);
@@ -46,6 +53,44 @@ namespace Compilador_MiniCSharp
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Archivo generado con éxito, 0 errores");
                     Console.ForegroundColor = ConsoleColor.White;
+                    Queue<Token> ColaTokens = new Queue<Token>();
+
+                    foreach(var item in analizador.ListaDeTokens)
+                    {
+                        Token temp = item;
+                        if(item.Tipo_token == 5)
+                        {
+                            temp.Palabra = "ident";
+                        }
+                        if(item.Tipo_token == 3)
+                        {
+                            temp.Palabra = "intConstant";
+                        }
+                        if(item.Tipo_token == 1)
+                        {
+                            temp.Palabra = "boolConstant";
+                        }
+                        if(item.Tipo_token ==2)
+                        {
+                            temp.Palabra = "doubleConstant";
+                        }
+                        if(item.Tipo_token == 6)
+                        {
+                            temp.Palabra = "stringConstant";
+
+                        }
+                        ColaTokens.Enqueue(temp);
+               
+                        
+                    }
+                    Token dolar = new Token("$", 0, 0, 0, 0);
+                    ColaTokens.Enqueue(dolar);
+
+
+                    AnalizadorSintactico modelo = new AnalizadorSintactico();
+                    modelo.AnalisisSintactico(ColaTokens);
+                    
+                    
                 }
                 else
                 {
