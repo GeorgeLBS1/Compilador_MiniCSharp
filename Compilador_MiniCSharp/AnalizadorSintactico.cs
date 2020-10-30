@@ -273,7 +273,7 @@ namespace MiniC
                     }
                     if (erro == 2)
                     {
-                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CFinal + " Error en token: " + Tokens.Peek().Palabra);
+                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CFinal + " Error en token: " +PilaLetras.Peek().Palabra);
                     }
                     if(erro == 3)
                     {
