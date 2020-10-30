@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Compilador_MiniCSharp;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MiniC
 {
@@ -91,7 +92,12 @@ namespace MiniC
 
             while (EstadoActual != "ACC")
             {
-                if (EstadoActual == "1" || EstadoActual == "2" || EstadoActual == "3" || EstadoActual == "4" || EstadoActual == "5"
+                if(Tokens.Count ==0)
+                {
+                    Console.WriteLine("Existen errores sintacticos");
+                    return;
+                }
+                else if (EstadoActual == "1" || EstadoActual == "2" || EstadoActual == "3" || EstadoActual == "4" || EstadoActual == "5"
                     || EstadoActual == "6" || EstadoActual == "7" || EstadoActual == "8" || EstadoActual == "9")  
                 {
                     //ir a
