@@ -5,7 +5,7 @@ José Díaz, Marcelo Rosales.
 ¿Cómo usarlo?
 El uso del proyecto es simple:
 
-1. Ejecute el programa .exe llamado MiniC
+1. Ejecute el programa .exe llamado MiniC ubicado en el archivo comprimido en rar llamado MiniC#Ejecutable.
 
 2. Espere a que cargue el mensaje en pantalla por completo y arrastre el archivo a analizar léxicamente a la consola que le aparecerá en la pantalla.
 
