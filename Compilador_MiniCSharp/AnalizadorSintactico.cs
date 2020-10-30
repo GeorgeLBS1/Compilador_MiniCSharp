@@ -266,18 +266,18 @@ namespace MiniC
                 }
                 else
                 {
-                    Console.WriteLine(LlaveDiccionario);
+                    
                     if(erro == 1)
                     {
-                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CFinal + " Error en token: " + Tokens.Peek().Palabra);
+                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CFinal);
                     }
                     if (erro == 2)
                     {
-                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CFinal + " Error en token: " +PilaLetras.Peek().Palabra);
+                        Console.WriteLine("Error en linea: " + PilaLetras.Peek().Linea + " columna: " + PilaLetras.Peek().CFinal );
                     }
                     if(erro == 3)
                     {
-                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CFinal + " Error en token: " + PilaLetras.Peek().Palabra);
+                        Console.WriteLine("Error en linea: " + PilaLetras.Peek().Linea + " columna: " + PilaLetras.Peek().CFinal);
                     }
                     bandera = true;
                     if(Tokens.Count ==0)
