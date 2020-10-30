@@ -269,15 +269,15 @@ namespace MiniC
                     
                     if(erro == 1)
                     {
-                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CFinal);
+                        Console.WriteLine("Error en linea: " + Tokens.Peek().Linea + " columna: " + Tokens.Peek().CInicio + "-" + Tokens.Peek().CFinal + " token: " + Tokens.Peek().Palabra);
                     }
                     if (erro == 2)
                     {
-                        Console.WriteLine("Error en linea: " + PilaLetras.Peek().Linea + " columna: " + PilaLetras.Peek().CFinal );
+                        Console.WriteLine("Error en linea: " + PilaLetras.Peek().Linea + " columna: " + PilaLetras.Peek().CInicio + "-" + PilaLetras.Peek().CFinal + " token: " +PilaLetras.Peek().Palabra);
                     }
                     if(erro == 3)
                     {
-                        Console.WriteLine("Error en linea: " + PilaLetras.Peek().Linea + " columna: " + PilaLetras.Peek().CFinal);
+                        Console.WriteLine("Error en linea: " + PilaLetras.Peek().Linea + " columna: "+PilaLetras.Peek().CInicio+"-" + Tokens.Peek().CFinal + " token: " + PilaLetras.Peek().Palabra);
                     }
                     bandera = true;
                     if(Tokens.Count ==0)
