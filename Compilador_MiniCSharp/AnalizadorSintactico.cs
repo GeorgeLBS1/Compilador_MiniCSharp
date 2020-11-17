@@ -128,6 +128,11 @@ namespace MiniC
                                 Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
                             }
+                            else if(Tokens.Peek().Palabra != ".")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
                             else
                             {
                                 EstadoActual = Siguiente[0].Substring(0, 1);
@@ -185,6 +190,11 @@ namespace MiniC
                                 Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
                             }
+                            else if (Tokens.Peek().Palabra != ".")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
                             else
                             {
                                 EstadoActual = Siguiente[0].Substring(0, 1);
@@ -233,6 +243,11 @@ namespace MiniC
                         {
                             //conflicto
                             if (Tokens.Peek().Palabra != "else")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else if (Tokens.Peek().Palabra != ".")
                             {
                                 Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
@@ -311,6 +326,11 @@ namespace MiniC
                         else
                         {
                             if (Tokens.Peek().Palabra != "else")
+                            {
+                                Siguiente[0] = Siguiente[1];
+                                EstadoActual = Siguiente[0].Substring(0, 1);
+                            }
+                            else if (Tokens.Peek().Palabra != ".")
                             {
                                 Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
