@@ -54,10 +54,12 @@ namespace Compilador_MiniCSharp
                     Console.WriteLine("Archivo generado con éxito, 0 errores");
                     Console.ForegroundColor = ConsoleColor.White;
                     Queue<Token> ColaTokens = new Queue<Token>();
+                    Queue<Token> ColaTokensSemantica = new Queue<Token>();
 
-                    foreach(var item in analizador.ListaDeTokens)
+                    foreach (var item in analizador.ListaDeTokens)
                     {
                         Token temp = item;
+                        Token temp2 = item;
                         if(item.Tipo_token == 5)
                         {
                             temp.Palabra = "ident";
@@ -80,6 +82,7 @@ namespace Compilador_MiniCSharp
 
                         }
                         ColaTokens.Enqueue(temp);
+                        ColaTokensSemantica.Enqueue(temp2);
                
                         
                     }
