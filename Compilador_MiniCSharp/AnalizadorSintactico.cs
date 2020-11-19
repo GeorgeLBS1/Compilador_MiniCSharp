@@ -89,7 +89,7 @@ namespace MiniC
             var Siguiente = Transiciones[LlaveDiccionario];
             EstadoActual = Siguiente[0].Substring(0,1);
             int erro = 0;
-
+            string llaves = ""; ;
 
             while (EstadoActual != "ACC")
             {
@@ -104,6 +104,8 @@ namespace MiniC
                     //ir a
 
                     PilaNumeros.Push(Convert.ToInt32(Siguiente[0]));
+                
+
                     LlaveDiccionario = PilaNumeros.Peek() + "_" + Tokens.Peek().Palabra;
                     if (Transiciones.ContainsKey(LlaveDiccionario))
                     {

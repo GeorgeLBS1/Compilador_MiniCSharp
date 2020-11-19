@@ -56,36 +56,52 @@ namespace Compilador_MiniCSharp
                     Queue<Token> ColaTokens = new Queue<Token>();
                     Queue<Token> ColaTokensSemantica = new Queue<Token>();
                     Stack<Token> Cola = new Stack<Token>();
+                    List<Token> lista = analizador.ListaDeTokens;
 
                     foreach (var item in analizador.ListaDeTokens)
                     {
-                        Token temp = item;
-                        Token temp2 = item;
-                        if(item.Tipo_token == 5)
+                        ColaTokensSemantica.Enqueue(item);
+                    }
+                    foreach (var item in analizador.ListaDeTokens)
+                    {
+                       
+
+                        if (item.Tipo_token == 5)
                         {
-                            temp.Palabra = "ident";
+                            Token temp = new Token("ident", item.CInicio, item.CFinal, item.Linea, item.Tipo_token);
+                            ColaTokens.Enqueue(temp);
                         }
-                        if(item.Tipo_token == 3)
+                        else if (item.Tipo_token == 3)
                         {
-                            temp.Palabra = "intConstant";
+                            Token temp = new Token("intConstant", item.CInicio, item.CFinal, item.Linea, item.Tipo_token);
+                            ColaTokens.Enqueue(temp);
                         }
-                        if(item.Tipo_token == 1)
+                        else if (item.Tipo_token == 1)
                         {
-                            temp.Palabra = "boolConstant";
+                            Token temp = new Token("boolConstant", item.CInicio, item.CFinal, item.Linea, item.Tipo_token);
+                            ColaTokens.Enqueue(temp);
                         }
-                        if(item.Tipo_token ==2)
+                         else  if (item.Tipo_token == 2)
                         {
-                            temp.Palabra = "doubleConstant";
+                            Token temp = new Token("doubleConstant", item.CInicio, item.CFinal, item.Linea, item.Tipo_token);
+                            ColaTokens.Enqueue(temp);
                         }
-                        if(item.Tipo_token == 6)
+                        else if (item.Tipo_token == 6)
                         {
-                            temp.Palabra = "stringConstant";
+                            Token temp = new Token("stringConstant", item.CInicio, item.CFinal, item.Linea, item.Tipo_token);
+                            ColaTokens.Enqueue(temp);
 
                         }
-                        ColaTokens.Enqueue(temp);
-                        ColaTokensSemantica.Enqueue(temp2);
-               
+                        else
+                        {
+                            Token temp = new Token(item.Palabra, item.CInicio, item.CFinal, item.Linea, item.Tipo_token);
+                            ColaTokens.Enqueue(temp);
+                        }
                         
+                       
+
+                     
+
                     }
                     Token dolar = new Token("$", 0, 0, 0, 0);
                     ColaTokens.Enqueue(dolar);
@@ -98,8 +114,8 @@ namespace Compilador_MiniCSharp
                     
                     AnalizadorSintactico modelo = new AnalizadorSintactico();
                     modelo.AnalisisSintactico(ColaTokens);
-                   // AnalizadorSemantico nuevo = new AnalizadorSemantico();
-                    // nuevo.Analizador(ColaTokensSemantica);
+                    AnalizadorSemantico nuevo = new AnalizadorSemantico();
+                     nuevo.Analizador(ColaTokensSemantica);
                     
                 }
                 else
@@ -107,7 +123,6 @@ namespace Compilador_MiniCSharp
                     Console.WriteLine($"Cantidad de errores: {analizador.CantidadErrores}");
                     Console.WriteLine("Archivo generado");
                 }
-
                 Console.ReadKey();
             }
             else

@@ -6,14 +6,15 @@ namespace MiniC
 {
     class Variable
     {
-        public string Valor { get; set; }
-        public string TipoDato { get; set; }
+         string Valor { get; set; }
+        string TipoDato { get; set; }
 
-        public int CInicio { get; set; }
-        public int CFinal { get; set; }
-        public int Linea { get; set; }
+         int CInicio { get; set; }
+        int CFinal { get; set; }
+         int Linea { get; set; }
+         int Constante { get; set; }
 
-        public Variable(string Val, string tp,  int ini, int fin, int lin)
+        public Variable(string Val, string tp,  int ini, int fin, int lin, int _Consante)
         {
             
             Valor = Val;
@@ -22,7 +23,7 @@ namespace MiniC
             CInicio = ini + 1;
             CFinal = fin + 1;
             Linea = lin;
-
+            Constante = _Consante;
         }
     }
 }
