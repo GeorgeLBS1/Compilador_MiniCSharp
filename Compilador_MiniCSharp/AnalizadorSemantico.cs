@@ -22,14 +22,14 @@ namespace MiniC
 
                 if (valorActual.Palabra == "class")
                 {
-                    string NombreClase = "";
+                    
                     int contadorLLave = 0;
                     int ContadorLlaveMetodo = 0;
                     bool erroLlaves = false;
                     Dictionary<string, Variable> Variables = new Dictionary<string, Variable>();
                     Dictionary<string, Intermedio> Metodos = new Dictionary<string, Intermedio>();
                     Dictionary<string, Metodo> variablesMetodo = new Dictionary<string, Metodo>();
-                    NombreClase = ListaToken.Dequeue().Palabra;
+                    Token NombreClase = ListaToken.Dequeue();
                     if (ListaToken.Peek().Palabra != "{")
                     {
                         while (ListaToken.Peek().Palabra != "{")
@@ -62,8 +62,7 @@ namespace MiniC
                                 if (ListaToken.Peek().Palabra == "(")
                                 {
                                     ListaToken.Dequeue();
-                                    if (!Metodos.ContainsKey(NombreMV.Palabra))
-                                    {
+                                    
                                         //Variables por parametros
                                         while (ListaToken.Peek().Palabra != ")")
                                         {
@@ -83,7 +82,8 @@ namespace MiniC
 
                                             if (parametros.ContainsKey(temp.Palabra))
                                             {
-                                                //Marcar error
+                                                Console.WriteLine("Ya se ha declarado un parametro con el nombre: " + temp.Palabra + " dentro del metodo: "
+                                                    + NombreMV.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio+"-"+temp.CFinal);
                                             }
                                             else
                                             {
@@ -134,7 +134,8 @@ namespace MiniC
 
                                                             if (variablesMetodo.ContainsKey(temp.Palabra))
                                                             {
-                                                                //Marcar error
+                                                                Console.WriteLine("Ya se ha declarado un variable con el nombre: " + temp.Palabra + " dentro del metodo: "
+                                                                      + NombreMV.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio + "-" + temp.CFinal);
                                                             }
                                                             else
                                                             {
@@ -163,7 +164,7 @@ namespace MiniC
                                                 }
                                                 if (ContadorLlaveMetodo != contadorLLave && ListaToken.Count == 0)
                                                 {
-                                                    //Error no hay llaves de cierre;
+                                                    Console.WriteLine("Falta llave de cierre del metodo, error en linea: " + valorActual.Linea);
                                                 }
                                             }
 
@@ -171,6 +172,8 @@ namespace MiniC
                                             Intermedio aux = new Intermedio(TipoDatoFV, variablesMetodo);
                                             if (Metodos.ContainsKey(NombreMV.Palabra))
                                             {
+                                                Console.WriteLine("Ya se ha declarado un metodo con el nombre: " + NombreMV.Palabra + " dentro de la clase: "
+                                                         + NombreClase.Palabra + " error en linea: " + valorActual.Linea);
                                                 //Error existe un metodo con ese nombre
                                             }
                                             else
@@ -181,13 +184,10 @@ namespace MiniC
                                         }
                                         else
                                         {
+                                            Console.WriteLine("No existe llave de apertura del metodo, error en linea: " + valorActual.Linea);
                                             //Falta apertura del metodo
                                         }
-                                    }
-                                    else
-                                    {
-                                        //El metodo ingresado ya existe en la clase
-                                    }
+                                    
                                 }//variables declaradas dentro de la clase
                                 else if (ListaToken.Peek().Palabra == ";")
                                 {
@@ -196,12 +196,11 @@ namespace MiniC
                                         Variable nueva = new Variable("", TipoDatoFV, NombreMV.CInicio, NombreMV.CFinal, NombreMV.Linea, 0);
                                         if (Variables.ContainsKey(NombreMV.Palabra))
                                         {
-                                            //Existe una variable con el mismo nombre dentro de la clase
+                                            Console.WriteLine("Ya se ha declarado un variable con el nombre: " + NombreMV.Palabra + " dentro de la clase: "
+                                                    + NombreClase.Palabra + " error en linea: " + NombreMV.Linea + " columna: " + NombreMV.CInicio + "-" + NombreMV.CFinal);
                                         }
                                         else
                                         {
-
-
                                             Variables.Add(NombreMV.Palabra, nueva);
                                         }
                                     }
@@ -223,17 +222,23 @@ namespace MiniC
                             {
 
                             }
+                            if(contadorLLave != 0 || ListaToken.Count ==0)
+                            {
+                                Console.WriteLine("Falta llave de cierre, error en linea " + valorActual.Linea);
+                            }
                         }
 
                         //Termina la clase entonces agregar la instancia de clase al diccionario
                         Tipos modelo2 = new Tipos(Variables, Metodos);
-                        if (clases.ContainsKey(NombreClase))
+                        if (clases.ContainsKey(NombreClase.Palabra))
                         {
+                            Console.WriteLine("Ya se ha declarado un variable con el nombre:"+ NombreClase.Palabra+
+                                "  error en linea: " + NombreClase.Linea + " columna: " + NombreClase.CInicio + "-" + NombreClase.CFinal);
                             //Existe una clase con el mismo nombre
                         }
                         else
                         {
-                            clases.Add(NombreClase, modelo2);
+                            clases.Add(NombreClase.Palabra, modelo2);
                         }
                     }
 
@@ -278,7 +283,8 @@ namespace MiniC
 
                             if (parametros.ContainsKey(temp.Palabra))
                             {
-                                //Marcar error
+                                Console.WriteLine("Ya se ha declarado un variable con el nombre: " + temp.Palabra + " dentro del metodo: "
+                                           + ident.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio + "-" + temp.CFinal);
                             }
                             else
                             {
@@ -323,7 +329,8 @@ namespace MiniC
                                             modelo.Linea = temp.Linea;
                                             if (parametros.ContainsKey(temp.Palabra))
                                             {
-                                                //Marcar error por definicion ya establecida
+                                                Console.WriteLine("Ya se ha declarado un variable con el nombre: " + temp.Palabra + " dentro del metodo: "
+                                                    + ident.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio + "-" + temp.CFinal);
                                             }
                                             else
                                             {
@@ -353,13 +360,15 @@ namespace MiniC
                                 }
                                 if (contadorLlaves != 0 && ListaToken.Count == 0)
                                 {
+                                    Console.WriteLine("Falta una llave de cierre, error en linea   " + valorActual.Linea);
                                     //Falta llave, marcar error
                                 }
 
                             }
                             if (MetodosGlobal.ContainsKey(ident.Palabra))
                             {
-                                //Existe un metoodo con el mismo nombre
+                                Console.WriteLine("Ya se ha declarado un metodo con el nombre: " + ident.Palabra +
+                                    " error en linea: " + ident.Linea + " columna: " + ident.CInicio + "-" + ident.CFinal);
                             }
                             else
                             {
@@ -376,6 +385,8 @@ namespace MiniC
                         {
                             if (VariablesGlobal.ContainsKey(ident.Palabra))
                             {
+                                Console.WriteLine("Ya se ha declarado ua variable con el nombre: " + ident.Palabra +
+                                    " error en linea: " + ident.Linea + " columna: " + ident.CInicio + "-" + ident.CFinal);
                                 //Ya existe la variable en contexto global
                             }
                             else
@@ -389,10 +400,6 @@ namespace MiniC
                     {
                         //no hacer nada
                     }
-
-
-
-
                 }
                 else if (valorActual.Palabra == "const")
                 {
@@ -401,6 +408,15 @@ namespace MiniC
                     if (identificador.Tipo_token == 5)
                     {
                         Variable constantes = new Variable("", tpd, identificador.CInicio, identificador.CFinal, identificador.Linea, 1);
+                        if(VariablesGlobal.ContainsKey(identificador.Palabra))
+                        {
+                            Console.WriteLine("Ya se ha declarado una variable con el nombre: " + identificador.Palabra +
+                                    " error en linea: " + identificador.Linea + " columna: " + identificador.CInicio + "-" + identificador.CFinal);
+                        }
+                        else
+                        {
+                            VariablesGlobal.Add(identificador.Palabra, constantes);
+                        }
                     }
                     if(ListaToken.Peek().Palabra == ";")
                     {
@@ -409,7 +425,36 @@ namespace MiniC
                 }
                 else if (valorActual.Palabra == "Interface")
                 {
-
+                    while (ListaToken.Peek().Palabra != "{")
+                    {
+                        ListaToken.Dequeue();
+                        if(ListaToken.Count==0)
+                        {
+                            Console.WriteLine("Falta llave de apuertura en interfaz"); 
+                            break;
+                        }
+                    }
+                    if(ListaToken.Peek().Palabra !="{")
+                    {
+                        ListaToken.Dequeue();
+                        int contadorLlaves = 1;
+                        while(contadorLlaves !=0)
+                        {
+                            valorActual = ListaToken.Dequeue();
+                            if(valorActual.Palabra =="{")
+                            {
+                                contadorLlaves++;
+                            }
+                            if(valorActual.Palabra == "}")
+                            {
+                                contadorLlaves--;
+                            }
+                        }
+                        if(ListaToken.Peek().Palabra == "}")
+                        {
+                            ListaToken.Dequeue();
+                        }
+                    }
                 }
                 else
                 {
