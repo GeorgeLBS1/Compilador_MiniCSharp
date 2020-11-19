@@ -293,7 +293,7 @@ namespace MiniC
                         {
                             ListaToken.Dequeue();
                         }
-                        ListaToken.Dequeue(); //Variables dentro de un metodo
+                         //Variables dentro de un metodo
                         if (ListaToken.Peek().Palabra == "{")
                         {
                             contadorLlaves++;
@@ -302,7 +302,7 @@ namespace MiniC
                             {
                                 valorActual = ListaToken.Dequeue();
 
-                                if (valorActual.Palabra == "void" || valorActual.Tipo_token == 5 || valorActual.Palabra == "int" || valorActual.Palabra == "string" || valorActual.Palabra == "bool" || valorActual.Palabra == "double")
+                                if ( valorActual.Tipo_token == 5 || valorActual.Palabra == "int" || valorActual.Palabra == "string" || valorActual.Palabra == "bool" || valorActual.Palabra == "double")
                                 {
                                     string tipoDato = valorActual.Palabra;
                                     if (ListaToken.Peek().Palabra == "[]")
@@ -310,33 +310,33 @@ namespace MiniC
                                         tipoDato += ListaToken.Dequeue().Palabra;
                                     }
                                     Token temp = ListaToken.Dequeue();
-                                    if (ListaToken.Peek().Palabra == ";")
+                                    if (temp.Tipo_token == 5)
                                     {
-                                        Metodo modelo = new Metodo();
-                                        modelo.TipoDato = tipoDato;
-                                        modelo.CFinal = temp.CFinal;
-                                        modelo.CInicio = temp.CInicio;
-                                        modelo.Valor = "";
-                                        modelo.Contexto = 0;
-                                        modelo.Linea = temp.Linea;
-                                        if (parametros.ContainsKey(temp.Palabra))
+                                        if (ListaToken.Peek().Palabra == ";")
                                         {
-                                            //Marcar error por definicion ya establecida
+                                            Metodo modelo = new Metodo();
+                                            modelo.TipoDato = tipoDato;
+                                            modelo.CFinal = temp.CFinal;
+                                            modelo.CInicio = temp.CInicio;
+                                            modelo.Valor = "";
+                                            modelo.Contexto = 0;
+                                            modelo.Linea = temp.Linea;
+                                            if (parametros.ContainsKey(temp.Palabra))
+                                            {
+                                                //Marcar error por definicion ya establecida
+                                            }
+                                            else
+                                            {
+                                                parametros.Add(temp.Palabra, modelo);
+                                                ListaToken.Dequeue();
+                                            }
                                         }
                                         else
                                         {
-                                            parametros.Add(temp.Palabra, modelo);
                                             ListaToken.Dequeue();
                                         }
                                     }
-                                    else
-                                    {
-                                        ListaToken.Dequeue();
-                                    }
-                                    if (contadorLlaves != 0 && ListaToken.Count == 0)
-                                    {
-                                        //Falta llave, marcar error
-                                    }
+                                 
                                 }
                                 else if (valorActual.Palabra == "{")
                                 {
@@ -351,7 +351,10 @@ namespace MiniC
                                 {
                                     //
                                 }
-
+                                if (contadorLlaves != 0 && ListaToken.Count == 0)
+                                {
+                                    //Falta llave, marcar error
+                                }
 
                             }
                             if (MetodosGlobal.ContainsKey(ident.Palabra))
@@ -369,19 +372,22 @@ namespace MiniC
                     }
                     else if (ListaToken.Peek().Palabra == ";")//Declaraciones de variables fuera de clases
                     {
-                        if (VariablesGlobal.ContainsKey(ident.Palabra))
+                        if (ident.Tipo_token == 5)
                         {
-                            //Ya existe la variable en contexto global
-                        }
-                        else
-                        {
-                            Variable nuevo = new Variable("", TipoDatoGlob, ident.CInicio, ident.CFinal, ident.Linea,0);
-                            VariablesGlobal.Add(ident.Palabra, nuevo);
+                            if (VariablesGlobal.ContainsKey(ident.Palabra))
+                            {
+                                //Ya existe la variable en contexto global
+                            }
+                            else
+                            {
+                                Variable nuevo = new Variable("", TipoDatoGlob, ident.CInicio, ident.CFinal, ident.Linea, 0);
+                                VariablesGlobal.Add(ident.Palabra, nuevo);
+                            }
                         }
                     }
                     else
                     {
-
+                        //no hacer nada
                     }
 
 
@@ -392,7 +398,10 @@ namespace MiniC
                 {
                     string tpd = ListaToken.Dequeue().Palabra;
                     Token identificador = ListaToken.Dequeue();
-                    Variable constantes = new Variable("", tpd, identificador.CInicio, identificador.CFinal, identificador.Linea, 1);
+                    if (identificador.Tipo_token == 5)
+                    {
+                        Variable constantes = new Variable("", tpd, identificador.CInicio, identificador.CFinal, identificador.Linea, 1);
+                    }
                     if(ListaToken.Peek().Palabra == ";")
                     {
                         ListaToken.Dequeue();
