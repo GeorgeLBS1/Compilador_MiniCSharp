@@ -55,6 +55,7 @@ namespace Compilador_MiniCSharp
                     Console.ForegroundColor = ConsoleColor.White;
                     Queue<Token> ColaTokens = new Queue<Token>();
                     Queue<Token> ColaTokensSemantica = new Queue<Token>();
+                    Stack<Token> Cola = new Stack<Token>();
 
                     foreach (var item in analizador.ListaDeTokens)
                     {
@@ -89,10 +90,16 @@ namespace Compilador_MiniCSharp
                     Token dolar = new Token("$", 0, 0, 0, 0);
                     ColaTokens.Enqueue(dolar);
 
-
+                    //foreach(var item in ColaTokens)
+                    //{
+                    //    Cola.Push(item);
+                    //}
+                    
+                    
                     AnalizadorSintactico modelo = new AnalizadorSintactico();
                     modelo.AnalisisSintactico(ColaTokens);
-                    
+                   // AnalizadorSemantico nuevo = new AnalizadorSemantico();
+                    // nuevo.Analizador(ColaTokensSemantica);
                     
                 }
                 else

@@ -20,5 +20,11 @@ namespace Compilador_MiniCSharp
             Linea = lin;
             Tipo_token = tip;
         }
+        public Token retorno(Queue<Token> ayuda)
+        {
+            Token temp1 = ayuda.Dequeue();
+            Token temp2 = ayuda.Dequeue();
+            return ayuda.Dequeue();
+        }
     }
 }

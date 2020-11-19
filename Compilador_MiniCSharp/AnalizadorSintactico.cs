@@ -14,6 +14,7 @@ namespace MiniC
         Dictionary<string, string[]> Transiciones = new Dictionary<string, string[]>();
         Stack<int> PilaNumeros = new Stack<int>();
         Stack<Token> PilaLetras = new Stack<Token>();
+        Queue<Token> AUX = new Queue<Token>();
         void LeerGramatica()
         {
             string[] linea;
@@ -123,18 +124,43 @@ namespace MiniC
                         }
                         else
                         {
-                            if(Tokens.Peek().Palabra != "else")
+                            if(Tokens.Peek().Palabra == "else")
                             {
-                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
+
                             }
-                            else if(Tokens.Peek().Palabra != ".")
+                            else if(Tokens.Peek().Palabra == ".")
                             {
-                                Siguiente[0] = Siguiente[1];
-                                EstadoActual = Siguiente[0].Substring(0, 1);
+                                AUX = Tokens;
+                                int contador = 0;
+                                Token temp4 = new Token("", 00, 00, 00, 00);
+                                foreach (var item in AUX)
+                                {
+                                    contador++;
+                                    if (contador == 3)
+                                    {
+                                        temp4 = item;
+                                        break;
+                                    }
+
+                                }
+
+                                if (temp4.Palabra == "(")
+                                {
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
+                                else
+                                {
+
+                                    Siguiente[0] = Siguiente[1];
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
+
+
                             }
                             else
                             {
+                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
                             }
                             //conflicto
@@ -185,18 +211,41 @@ namespace MiniC
 
 
                             //conflicto
-                            if (Tokens.Peek().Palabra != "else")
+                            if (Tokens.Peek().Palabra == "else")
                             {
-                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
+
                             }
-                            else if (Tokens.Peek().Palabra != ".")
+                            else if (Tokens.Peek().Palabra == ".")
                             {
-                                Siguiente[0] = Siguiente[1];
-                                EstadoActual = Siguiente[0].Substring(0, 1);
+                                AUX = Tokens;
+                                int contador = 0;
+                                Token temp = new Token("", 00, 00, 00, 00);
+                                foreach(var item in AUX)
+                                {
+                                    contador++;
+                                    if(contador == 3)
+                                    {
+                                        temp = item;
+                                        break;
+                                    }
+
+                                }
+                               
+                                if (temp.Palabra == "(")
+                                {
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
+                                else
+                                {
+
+                                    Siguiente[0] = Siguiente[1];
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
                             }
                             else
                             {
+                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
                             }
                         }
@@ -242,18 +291,41 @@ namespace MiniC
                         else
                         {
                             //conflicto
-                            if (Tokens.Peek().Palabra != "else")
+                            if (Tokens.Peek().Palabra == "else")
                             {
-                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
+
                             }
-                            else if (Tokens.Peek().Palabra != ".")
+                            else if (Tokens.Peek().Palabra == ".")
                             {
-                                Siguiente[0] = Siguiente[1];
-                                EstadoActual = Siguiente[0].Substring(0, 1);
+                                AUX = Tokens;
+                                int contador = 0;
+                                Token temp2 = new Token("", 00, 00, 00, 00);
+                                foreach (var item in AUX)
+                                {
+                                    contador++;
+                                    if (contador == 3)
+                                    {
+                                        temp2 = item;
+                                        break;
+                                    }
+
+                                }
+
+                                if (temp2.Palabra == "(")
+                                {
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
+                                else
+                                {
+
+                                    Siguiente[0] = Siguiente[1];
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
                             }
                             else
                             {
+                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
                             }
                         }
@@ -325,18 +397,41 @@ namespace MiniC
                         }
                         else
                         {
-                            if (Tokens.Peek().Palabra != "else")
+                            if (Tokens.Peek().Palabra == "else")
                             {
-                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
+
                             }
-                            else if (Tokens.Peek().Palabra != ".")
+                            else if (Tokens.Peek().Palabra == ".")
                             {
-                                Siguiente[0] = Siguiente[1];
-                                EstadoActual = Siguiente[0].Substring(0, 1);
+                                AUX = Tokens;
+                                int contador = 0;
+                                Token temp3 = new Token("", 00, 00, 00, 00);
+                                foreach (var item in AUX)
+                                {
+                                    contador++;
+                                    if (contador == 3)
+                                    {
+                                        temp3 = item;
+                                        break;
+                                    }
+
+                                }
+
+                                if (temp3.Palabra == "(")
+                                {
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
+                                else
+                                {
+
+                                    Siguiente[0] = Siguiente[1];
+                                    EstadoActual = Siguiente[0].Substring(0, 1);
+                                }
                             }
                             else
                             {
+                                Siguiente[0] = Siguiente[1];
                                 EstadoActual = Siguiente[0].Substring(0, 1);
                             }
                             //conflicto

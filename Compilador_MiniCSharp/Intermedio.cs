@@ -6,7 +6,14 @@ namespace MiniC
 {
     class Intermedio
     {
-        int TipoFuncion;
+        string TipoFuncion;
         Dictionary<string, Metodo> variables = new Dictionary<string, Metodo>();
+
+        public Intermedio(string _tp, Dictionary<string, Metodo> _variables)
+        {
+            TipoFuncion = _tp;
+            variables = _variables;
+
+        }
     }
 }
