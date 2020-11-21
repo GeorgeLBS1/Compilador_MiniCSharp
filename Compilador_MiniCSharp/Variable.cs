@@ -6,8 +6,8 @@ namespace MiniC
 {
     class Variable
     {
-         string Valor { get; set; }
-        string TipoDato { get; set; }
+        public string Valor { get; set; }
+        public string TipoDato { get; set; }
 
          int CInicio { get; set; }
         int CFinal { get; set; }
