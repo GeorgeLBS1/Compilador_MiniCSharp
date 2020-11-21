@@ -8,4 +8,10 @@
     <RootNamespace>MiniC</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="LibExpressionParser">
+      <HintPath>..\..\LibExpressionParser.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
