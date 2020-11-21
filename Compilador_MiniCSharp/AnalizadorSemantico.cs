@@ -188,7 +188,15 @@ namespace MiniC
                                                         case "(":
                                                             List<Token> Operar = new List<Token>();
                                                             temp = lTokens[Siguiente - 2]; //Valor a asignar
-
+                                                            string tipodedato = "";
+                                                            if (variablesMetodo.TryGetValue(temp.Palabra, out Metodo tipo11))
+                                                            {
+                                                                tipodedato = tipo11.TipoDato;
+                                                            }
+                                                            else if (VariablesGlobal.TryGetValue(temp.Palabra, out Variable tipo2))
+                                                            {
+                                                                tipodedato = tipo2.TipoDato;
+                                                            }
                                                             //Verificar que exista "temp" tanto en globales como en locales
                                                             if (variablesMetodo.TryGetValue(temp.Palabra, out Metodo Asignacion) == true) //Ver si está declara la variable que se va a asignar en el método
                                                             {
@@ -212,20 +220,39 @@ namespace MiniC
                                                                             //Si es una variable verificar si existe
                                                                             if (variablesMetodo.TryGetValue(item.Palabra, out Metodo LocalItem) == true)
                                                                             {
-                                                                                CadenaOperacion += LocalItem.Valor;
+                                                                                if (LocalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += LocalItem.Valor;
+                                                                                }
+                                                                                
                                                                             }
                                                                             else if (VariablesGlobal.TryGetValue(item.Palabra, out Variable GlobalItem) == true)
                                                                             {
-                                                                                CadenaOperacion += GlobalItem.Valor;
+                                                                                if (GlobalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += GlobalItem.Valor;
+                                                                                }
+                                                                                
+
                                                                             }
                                                                             else
                                                                             {
                                                                                 Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                break;
                                                                             }
                                                                         }
                                                                         else //Es una constante de cierto tipo
                                                                         {
-                                                                            if (temp.Tipo_token == 3 && (item.Tipo_token == 3 || item.Tipo_token == 2)) //Enteros se pueden operar con dobles
+                                                                            
+                                                                            if ((tipodedato == "int" || tipodedato == "double") && (item.Tipo_token == 3 || item.Tipo_token == 2)) //Enteros se pueden Operar2 con dobles
                                                                             {
                                                                                 CadenaOperacion += item.Palabra; //Agregar eso a la expresion
                                                                             }
@@ -257,7 +284,7 @@ namespace MiniC
                                                                         ExpressionsCollection objColExpressions;
 
                                                                         // Asigna las propiedades de compilación
-                                                                        if (temp.Tipo_token == 3)
+                                                                        if (tipodedato == "int")
                                                                         {
                                                                             objCompiler.Properties.Decimals = 0;
                                                                         }
@@ -278,24 +305,144 @@ namespace MiniC
                                                                         objResult = objCompiler.Evaluate(objColExpressions, objColVariables, out string strError);
                                                                         // Muestra el resultado
                                                                         if (!string.IsNullOrEmpty(strError))
-                                                                            Console.WriteLine("Error en la ejecución: " + strError);
-                                                                        else if (objResult.Content == "")
                                                                         {
-                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, "0"));
+                                                                            Console.WriteLine("Error en la ejecución: " + strError);
+                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, CadenaOperacion));
                                                                         }
                                                                         else
-                                                                        tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, objResult.Content));
+                                                                        {
+                                                                            Console.WriteLine("Resultado: " + objResult.Content);
+                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, objResult.Content));
+                                                                        }
                                                                     }
                                                                     
                                                                 }
                                                             }
                                                             else if (VariablesGlobal.TryGetValue(temp.Palabra, out Variable VariableGlobal1) == true) //Si no está en el método buscarla en las globales
                                                             {
+                                                                //Llenar lista con valores a operar
+                                                                while (lTokens[Siguiente].Palabra != ";")
+                                                                {
+                                                                    Operar.Add(lTokens[Siguiente]);
+                                                                    Siguiente++;
+                                                                }
+                                                                //Verificar tipos
+                                                                bool tipos_correctos = true; //Se toma que todos los tipos de datos son correctos en un principio
+                                                                string CadenaOperacion = "";
+                                                                foreach (var item in Operar)
+                                                                {
+                                                                    //if (item.Palabra != ">" && item.Palabra != "<" && item.Palabra != ">=" && item.Palabra != "<=" && item.Palabra != "==" && item.Palabra != "!=")
+                                                                    //{
+                                                                    if (item.Tipo_token != 4) //Media vez no sean operadores y sean números o variables
+                                                                    {
+                                                                        if (item.Tipo_token == 5) //Verificar si item es una variable
+                                                                        {
+                                                                            //Si es una variable verificar si existe
+                                                                            if (variablesMetodo.TryGetValue(item.Palabra, out Metodo LocalItem) == true)
+                                                                            {
+                                                                                if (LocalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += LocalItem.Valor;
+                                                                                }
 
+                                                                            }
+                                                                            else if (VariablesGlobal.TryGetValue(item.Palabra, out Variable GlobalItem) == true)
+                                                                            {
+                                                                                if (GlobalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += GlobalItem.Valor;
+                                                                                }
+
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        else //Es una constante de cierto tipo
+                                                                        {
+
+                                                                            if ((tipodedato == "int" || tipodedato == "double") && (item.Tipo_token == 3 || item.Tipo_token == 2)) //Enteros se pueden Operar2 con dobles
+                                                                            {
+                                                                                CadenaOperacion += item.Palabra; //Agregar eso a la expresion
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                tipos_correctos = false;
+                                                                                Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} tipo de dato inválido para operar");
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else //Agregar los operadores sin verificar nada
+                                                                    {
+                                                                        CadenaOperacion += item.Palabra;
+                                                                    }
+
+
+                                                                }
+                                                                if (tipos_correctos != false) //Si todo está bien, añadirlo a la tabla de símbolos
+                                                                {
+                                                                    if (CadenaOperacion.Contains('>') || CadenaOperacion.Contains('<') || CadenaOperacion.Contains(">=") || CadenaOperacion.Contains("<=") || CadenaOperacion.Contains("==") || CadenaOperacion.Contains("!=") || CadenaOperacion.Contains("&&") || CadenaOperacion.Contains("||") || CadenaOperacion.Contains("%"))
+                                                                    {
+                                                                        tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, CadenaOperacion));
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        Compiler objCompiler = new Compiler();
+                                                                        ExpressionsCollection objColExpressions;
+
+                                                                        // Asigna las propiedades de compilación
+                                                                        if (tipodedato == "int")
+                                                                        {
+                                                                            objCompiler.Properties.Decimals = 0;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            objCompiler.Properties.Decimals = 2;
+                                                                        }
+
+                                                                        // Interpreta la expresión de una cadena de texto
+                                                                        objColExpressions = objCompiler.Parse(CadenaOperacion);
+
+
+                                                                        VariablesCollection objColVariables = new VariablesCollection();
+                                                                        ValueBase objResult;
+
+
+                                                                        // Ejecuta las expresiones
+                                                                        objResult = objCompiler.Evaluate(objColExpressions, objColVariables, out string strError);
+                                                                        // Muestra el resultado
+                                                                        if (!string.IsNullOrEmpty(strError))
+                                                                        {
+                                                                            Console.WriteLine("Error en la ejecución: " + strError);
+                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, CadenaOperacion));
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            Console.WriteLine("Resultado: " + objResult.Content);
+                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, objResult.Content));
+                                                                        }
+
+                                                                    }
+
+                                                                }
                                                             }
                                                             else //Erro porque el id no está declarado
                                                             {
                                                                 Console.WriteLine($"Error en la linea {temp.Linea}. identificador: {temp.Palabra} no fue declarado previamente");
+                                                                break;
                                                             }
 
 
@@ -314,6 +461,7 @@ namespace MiniC
                                                                     if (Asignacion3.TipoDato != Value.TipoDato)
                                                                     {
                                                                         Console.WriteLine($"Error en la linea, {Asignacion3.Linea}. los tipos de datos {temp.Palabra} y {Instancia.Palabra}, no coinciden");
+                                                                        break;
                                                                     }
                                                                     else //todo bien asignar valor
                                                                     {
@@ -330,6 +478,7 @@ namespace MiniC
                                                                     if (VariableGlobal.TipoDato != Value.TipoDato)
                                                                     {
                                                                         Console.WriteLine($"Error en la linea, {temp.Linea}. los tipos de datos {temp.Palabra} y {Instancia.Palabra}, no coinciden");
+                                                                        break;
                                                                     }
                                                                     else //todo bien asignar valor
                                                                     {
@@ -341,13 +490,22 @@ namespace MiniC
                                                             else //Erro porque el id no está declarado
                                                             {
                                                                 Console.WriteLine($"Error en la linea {temp.Linea}. identificador: {temp.Palabra} no fue declarado previamente");
+                                                                break;
                                                             }
 
                                                             break;
                                                         default: //Directamente una operación
                                                             List<Token> Operar2 = new List<Token>();
                                                             temp = lTokens[Siguiente - 2]; //Valor a asignar
-
+                                                            string tipodedato1 = "";
+                                                            if (variablesMetodo.TryGetValue(temp.Palabra, out Metodo tipo111))
+                                                            {
+                                                                tipodedato1 = tipo111.TipoDato;
+                                                            }
+                                                            else if (VariablesGlobal.TryGetValue(temp.Palabra, out Variable tipo22))
+                                                            {
+                                                                tipodedato1 = tipo22.TipoDato;
+                                                            }
                                                             //Verificar que exista "temp" tanto en globales como en locales
                                                             if (variablesMetodo.TryGetValue(temp.Palabra, out Metodo Asignacionnn) == true) //Ver si está declara la variable que se va a asignar en el método
                                                             {
@@ -371,20 +529,38 @@ namespace MiniC
                                                                             //Si es una variable verificar si existe
                                                                             if (variablesMetodo.TryGetValue(item.Palabra, out Metodo LocalItem) == true)
                                                                             {
-                                                                                CadenaOperacion += LocalItem.Valor;
+                                                                                
+                                                                                if (LocalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += LocalItem.Valor;
+                                                                                }
                                                                             }
                                                                             else if (VariablesGlobal.TryGetValue(item.Palabra, out Variable GlobalItem) == true)
                                                                             {
-                                                                                CadenaOperacion += GlobalItem.Valor;
+                                                                                
+                                                                                if (GlobalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += GlobalItem.Valor;
+                                                                                }
                                                                             }
                                                                             else
                                                                             {
                                                                                 Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                break;
                                                                             }
                                                                         }
                                                                         else //Es una constante de cierto tipo
                                                                         {
-                                                                            if (temp.Tipo_token == 3 && (item.Tipo_token == 3 || item.Tipo_token == 2)) //Enteros se pueden Operar2 con dobles
+                                                                            
+                                                                            if ((tipodedato1 == "int" || tipodedato1 == "double") && (item.Tipo_token == 3 || item.Tipo_token == 2)) //Enteros se pueden Operar2 con dobles
                                                                             {
                                                                                 CadenaOperacion += item.Palabra; //Agregar eso a la expresion
                                                                             }
@@ -416,7 +592,7 @@ namespace MiniC
                                                                         ExpressionsCollection objColExpressions;
 
                                                                         // Asigna las propiedades de compilación
-                                                                        if (temp.Tipo_token == 3)
+                                                                        if (tipodedato1 == "int")
                                                                         {
                                                                             objCompiler.Properties.Decimals = 0;
                                                                         }
@@ -437,10 +613,15 @@ namespace MiniC
                                                                         objResult = objCompiler.Evaluate(objColExpressions, objColVariables, out string strError);
                                                                         // Muestra el resultado
                                                                         if (!string.IsNullOrEmpty(strError))
+                                                                        {
                                                                             Console.WriteLine("Error en la ejecución: " + strError);
+                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, CadenaOperacion));
+                                                                        }
                                                                         else
+                                                                        {
                                                                             Console.WriteLine("Resultado: " + objResult.Content);
-                                                                        tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, objResult.Content));
+                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, objResult.Content));
+                                                                        }
                                                                     }
 
                                                                 }
@@ -468,20 +649,36 @@ namespace MiniC
                                                                             //Si es una variable verificar si existe
                                                                             if (variablesMetodo.TryGetValue(item.Palabra, out Metodo LocalItem) == true)
                                                                             {
-                                                                                CadenaOperacion += LocalItem.Valor;
+                                                                                if (LocalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += LocalItem.Valor;
+                                                                                }
                                                                             }
                                                                             else if (VariablesGlobal.TryGetValue(item.Palabra, out Variable GlobalItem) == true)
                                                                             {
-                                                                                CadenaOperacion += GlobalItem.Valor;
+                                                                                if (GlobalItem.Valor == "")
+                                                                                {
+                                                                                    CadenaOperacion += item.Palabra;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    CadenaOperacion += GlobalItem.Valor;
+                                                                                }
                                                                             }
                                                                             else
                                                                             {
                                                                                 Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                break;
                                                                             }
                                                                         }
                                                                         else //Es una constante de cierto tipo
                                                                         {
-                                                                            if (temp.Tipo_token == 3 && (item.Tipo_token == 3 || item.Tipo_token == 2)) //Enteros se pueden Operar4 con dobles
+                                                                            
+                                                                            if ((tipodedato1 == "int" || tipodedato1 == "double") && (item.Tipo_token == 3 || item.Tipo_token == 2)) //Enteros se pueden Operar2 con dobles
                                                                             {
                                                                                 CadenaOperacion += item.Palabra; //Agregar eso a la expresion
                                                                             }
@@ -513,7 +710,7 @@ namespace MiniC
                                                                         ExpressionsCollection objColExpressions;
 
                                                                         // asignacionGlobal las propiedades de compilación
-                                                                        if (temp.Tipo_token == 3)
+                                                                        if (tipodedato1 == "int")
                                                                         {
                                                                             objCompiler.Properties.Decimals = 0;
                                                                         }
@@ -534,13 +731,15 @@ namespace MiniC
                                                                         objResult = objCompiler.Evaluate(objColExpressions, objColVariables, out string strError);
                                                                         // Muestra el resultado
                                                                         if (!string.IsNullOrEmpty(strError))
-                                                                            Console.WriteLine("Error en la ejecución: " + strError);
-                                                                        else if (objResult.Content == "")
                                                                         {
-                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, "0"));
+                                                                            Console.WriteLine("Error en la ejecución: " + strError);
+                                                                            tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, CadenaOperacion));
                                                                         }
                                                                         else
+                                                                        {
+                                                                            Console.WriteLine("Resultado: " + objResult.Content);
                                                                             tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, objResult.Content));
+                                                                        }
                                                                     }
 
                                                                 }
@@ -548,6 +747,7 @@ namespace MiniC
                                                             else //Erro porque el id no está declarado
                                                             {
                                                                 Console.WriteLine($"Error en la linea {temp.Linea}. identificador: {temp.Palabra} no fue declarado previamente");
+                                                                break;
                                                             }
                                                             break;
                                                     }
@@ -690,145 +890,148 @@ namespace MiniC
                     int contadorLlaves = 0;
 
 
-
-                    if (ListaToken.Peek().Palabra == "(") // Declaraciones de metodos fuera de clases
+                    if (ListaToken.Count > 0)
                     {
-                        Dictionary<string, Metodo> parametros = new Dictionary<string, Metodo>();
-                        ListaToken.Dequeue();
-
-                        while (ListaToken.Peek().Palabra != ")")
+                        if (ListaToken.Peek().Palabra == "(") // Declaraciones de metodos fuera de clases
                         {
-                            Metodo modelo = new Metodo();
-                            string TipoDato = ListaToken.Dequeue().Palabra;
-                            if (ListaToken.Peek().Palabra == "[]")
-                            {
-                                TipoDato += ListaToken.Dequeue().Palabra;
-                            }
-                            Token temp = ListaToken.Dequeue();
-                            modelo.TipoDato = TipoDato;
-                            modelo.CInicio = temp.CInicio;
-                            modelo.CFinal = temp.CFinal;
-                            modelo.Contexto = 1;
-                            modelo.Valor = "";
-                            modelo.Linea = temp.Linea;
-
-                            if (parametros.ContainsKey(temp.Palabra))
-                            {
-                                Console.WriteLine("Ya se ha declarado un variable con el nombre: " + temp.Palabra + " dentro del metodo: "
-                                           + ident.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio + "-" + temp.CFinal);
-                            }
-                            else
-                            {
-                                parametros.Add(temp.Palabra, modelo);
-                                tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, modelo.Valor));
-                            }
-                            if (ListaToken.Peek().Palabra == ",")
-                            {
-                                ListaToken.Dequeue();
-                            }
-                        }
-                        if (ListaToken.Peek().Palabra == ")")
-                        {
+                            Dictionary<string, Metodo> parametros = new Dictionary<string, Metodo>();
                             ListaToken.Dequeue();
-                        }
-                        //Variables dentro de un metodo
-                        if (ListaToken.Peek().Palabra == "{")
-                        {
-                            contadorLlaves++;
-                            ListaToken.Dequeue();
-                            while (contadorLlaves != 0)
+
+                            while (ListaToken.Peek().Palabra != ")")
                             {
-                                valorActual = ListaToken.Dequeue();
-
-                                if (valorActual.Tipo_token == 5 || valorActual.Palabra == "int" || valorActual.Palabra == "string" || valorActual.Palabra == "bool" || valorActual.Palabra == "double")
+                                Metodo modelo = new Metodo();
+                                string TipoDato = ListaToken.Dequeue().Palabra;
+                                if (ListaToken.Peek().Palabra == "[]")
                                 {
-                                    string tipoDato = valorActual.Palabra;
-                                    if (ListaToken.Peek().Palabra == "[]")
-                                    {
-                                        tipoDato += ListaToken.Dequeue().Palabra;
-                                    }
-                                    Token temp = ListaToken.Dequeue();
-                                    if (temp.Tipo_token == 5)
-                                    {
-                                        if (ListaToken.Peek().Palabra == ";")
-                                        {
-                                            Metodo modelo = new Metodo();
-                                            modelo.TipoDato = tipoDato;
-                                            modelo.CFinal = temp.CFinal;
-                                            modelo.CInicio = temp.CInicio;
-                                            modelo.Valor = "";
-                                            modelo.Contexto = 0;
-                                            modelo.Linea = temp.Linea;
-                                            if (parametros.ContainsKey(temp.Palabra))
-                                            {
-                                                Console.WriteLine("Ya se ha declarado un variable con el nombre: " + temp.Palabra + " dentro del metodo: "
-                                                    + ident.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio + "-" + temp.CFinal);
-                                            }
-                                            else
-                                            {
-                                                parametros.Add(temp.Palabra, modelo);
-                                                tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, modelo.Valor));
-                                                ListaToken.Dequeue();
-                                            }
-                                        }
-                                        else
-                                        {
-                                            ListaToken.Dequeue();
-                                        }
-                                    }
-
+                                    TipoDato += ListaToken.Dequeue().Palabra;
                                 }
-                                else if (valorActual.Palabra == "{")
-                                {
-                                    contadorLlaves++;
-                                }
-                                else if (valorActual.Palabra == "}")
-                                {
-                                    contadorLlaves--;
+                                Token temp = ListaToken.Dequeue();
+                                modelo.TipoDato = TipoDato;
+                                modelo.CInicio = temp.CInicio;
+                                modelo.CFinal = temp.CFinal;
+                                modelo.Contexto = 1;
+                                modelo.Valor = "";
+                                modelo.Linea = temp.Linea;
 
+                                if (parametros.ContainsKey(temp.Palabra))
+                                {
+                                    Console.WriteLine("Ya se ha declarado un variable con el nombre: " + temp.Palabra + " dentro del metodo: "
+                                               + ident.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio + "-" + temp.CFinal);
                                 }
                                 else
                                 {
-                                    //
+                                    parametros.Add(temp.Palabra, modelo);
+                                    tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, modelo.Valor));
                                 }
-                                if (contadorLlaves != 0 && ListaToken.Count == 0)
+                                if (ListaToken.Peek().Palabra == ",")
                                 {
-                                    Console.WriteLine("Falta una llave de cierre, error en linea   " + valorActual.Linea);
-                                    //Falta llave, marcar error
+                                    ListaToken.Dequeue();
+                                }
+                            }
+                            if (ListaToken.Peek().Palabra == ")")
+                            {
+                                ListaToken.Dequeue();
+                            }
+                            //Variables dentro de un metodo
+                            if (ListaToken.Peek().Palabra == "{")
+                            {
+                                contadorLlaves++;
+                                ListaToken.Dequeue();
+                                while (contadorLlaves != 0)
+                                {
+                                    valorActual = ListaToken.Dequeue();
+
+                                    if (valorActual.Tipo_token == 5 || valorActual.Palabra == "int" || valorActual.Palabra == "string" || valorActual.Palabra == "bool" || valorActual.Palabra == "double")
+                                    {
+                                        string tipoDato = valorActual.Palabra;
+                                        if (ListaToken.Peek().Palabra == "[]")
+                                        {
+                                            tipoDato += ListaToken.Dequeue().Palabra;
+                                        }
+                                        Token temp = ListaToken.Dequeue();
+                                        if (temp.Tipo_token == 5)
+                                        {
+                                            if (ListaToken.Peek().Palabra == ";")
+                                            {
+                                                Metodo modelo = new Metodo();
+                                                modelo.TipoDato = tipoDato;
+                                                modelo.CFinal = temp.CFinal;
+                                                modelo.CInicio = temp.CInicio;
+                                                modelo.Valor = "";
+                                                modelo.Contexto = 0;
+                                                modelo.Linea = temp.Linea;
+                                                if (parametros.ContainsKey(temp.Palabra))
+                                                {
+                                                    Console.WriteLine("Ya se ha declarado un variable con el nombre: " + temp.Palabra + " dentro del metodo: "
+                                                        + ident.Palabra + " error en linea: " + temp.Linea + " columna: " + temp.CInicio + "-" + temp.CFinal);
+                                                }
+                                                else
+                                                {
+                                                    parametros.Add(temp.Palabra, modelo);
+                                                    tablaDeSimbolos.Add(new TablaDeSimbolos(temp.Palabra, modelo.Valor));
+                                                    ListaToken.Dequeue();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                ListaToken.Dequeue();
+                                            }
+                                        }
+
+                                    }
+                                    else if (valorActual.Palabra == "{")
+                                    {
+                                        contadorLlaves++;
+                                    }
+                                    else if (valorActual.Palabra == "}")
+                                    {
+                                        contadorLlaves--;
+
+                                    }
+                                    else
+                                    {
+                                        //
+                                    }
+                                    if (contadorLlaves != 0 && ListaToken.Count == 0)
+                                    {
+                                        Console.WriteLine("Falta una llave de cierre, error en linea   " + valorActual.Linea);
+                                        //Falta llave, marcar error
+                                    }
+
+                                }
+                                if (MetodosGlobal.ContainsKey(ident.Palabra))
+                                {
+                                    Console.WriteLine("Ya se ha declarado un metodo con el nombre: " + ident.Palabra +
+                                        " error en linea: " + ident.Linea + " columna: " + ident.CInicio + "-" + ident.CFinal);
+                                }
+                                else
+                                {
+                                    Intermedio agregar = new Intermedio(TipoDatoGlob, parametros);
+                                    MetodosGlobal.Add(ident.Palabra, agregar);
                                 }
 
                             }
-                            if (MetodosGlobal.ContainsKey(ident.Palabra))
-                            {
-                                Console.WriteLine("Ya se ha declarado un metodo con el nombre: " + ident.Palabra +
-                                    " error en linea: " + ident.Linea + " columna: " + ident.CInicio + "-" + ident.CFinal);
-                            }
-                            else
-                            {
-                                Intermedio agregar = new Intermedio(TipoDatoGlob, parametros);
-                                MetodosGlobal.Add(ident.Palabra, agregar);
-                            }
 
                         }
-
-                    }
-                    else if (ListaToken.Peek().Palabra == ";")//Declaraciones de variables fuera de clases
-                    {
-                        if (ident.Tipo_token == 5)
+                        else if (ListaToken.Peek().Palabra == ";")//Declaraciones de variables fuera de clases
                         {
-                            if (VariablesGlobal.ContainsKey(ident.Palabra))
+                            if (ident.Tipo_token == 5)
                             {
-                                Console.WriteLine("Ya se ha declarado ua variable con el nombre: " + ident.Palabra +
-                                    " error en linea: " + ident.Linea + " columna: " + ident.CInicio + "-" + ident.CFinal);
-                                //Ya existe la variable en contexto global
-                            }
-                            else
-                            {
-                                Variable nuevo = new Variable("", TipoDatoGlob, ident.CInicio, ident.CFinal, ident.Linea, 0);
-                                VariablesGlobal.Add(ident.Palabra, nuevo);
+                                if (VariablesGlobal.ContainsKey(ident.Palabra))
+                                {
+                                    Console.WriteLine("Ya se ha declarado ua variable con el nombre: " + ident.Palabra +
+                                        " error en linea: " + ident.Linea + " columna: " + ident.CInicio + "-" + ident.CFinal);
+                                    //Ya existe la variable en contexto global
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable("", TipoDatoGlob, ident.CInicio, ident.CFinal, ident.Linea, 0);
+                                    VariablesGlobal.Add(ident.Palabra, nuevo);
+                                }
                             }
                         }
                     }
+                    
                     else
                     {
                         //no hacer nada
