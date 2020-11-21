@@ -246,6 +246,7 @@ namespace MiniC
                                                                             else
                                                                             {
                                                                                 Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                tipos_correctos = false;
                                                                                 break;
                                                                             }
                                                                         }
@@ -366,6 +367,7 @@ namespace MiniC
                                                                             else
                                                                             {
                                                                                 Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                tipos_correctos = false;
                                                                                 break;
                                                                             }
                                                                         }
@@ -554,6 +556,7 @@ namespace MiniC
                                                                             else
                                                                             {
                                                                                 Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                tipos_correctos = false;
                                                                                 break;
                                                                             }
                                                                         }
@@ -672,6 +675,7 @@ namespace MiniC
                                                                             else
                                                                             {
                                                                                 Console.WriteLine($"Error en la linea {item.Linea}. identificador: {item.Palabra} no fue declarado previamente");
+                                                                                tipos_correctos = false;
                                                                                 break;
                                                                             }
                                                                         }
