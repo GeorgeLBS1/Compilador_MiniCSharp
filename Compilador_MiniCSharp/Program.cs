@@ -115,7 +115,8 @@ namespace Compilador_MiniCSharp
                     AnalizadorSintactico modelo = new AnalizadorSintactico();
                     modelo.AnalisisSintactico(ColaTokens);
                     AnalizadorSemantico nuevo = new AnalizadorSemantico();
-                     nuevo.Analizador(ColaTokensSemantica);
+                    nuevo.Analizador(ColaTokensSemantica, analizador.ListaDeTokens);
+                    //nuevo.AnalizarSemantica(analizador.ListaDeTokens);
                     
                 }
                 else
